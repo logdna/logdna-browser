@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.0.1](https://github.com/logdna/logdna-browser/compare/v1.0.0...v1.0.1) (2021-04-22)
+
+
+### Bug Fixes
+
+* add dist folder to list of packaged files [1515ce8](https://github.com/logdna/logdna-browser/commit/1515ce88a63258788f29aa89513b40758519ddb3) - Terry Moore
+
 # 1.0.0 (2021-04-22)
 
 
