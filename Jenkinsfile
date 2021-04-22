@@ -139,6 +139,7 @@ pipeline {
       steps {
         sh 'mkdir -p .npm'
         sh 'npm install'
+        sh 'npm run build'
         sh 'npm run release'
       }
     }
