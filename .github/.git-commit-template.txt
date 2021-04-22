@@ -1,0 +1,46 @@
+# <type>[optional scope]: (If applied, this commit will...) <subject>
+# [Example] refactor(metrics): Rename prometheus metrics
+
+Summary:
+# Explain why this change is being made
+# [Example] BREAKING CHANGE: Metrics renaming breaks existing dashboards
+
+Test plan:
+# Explain how you tested your changes (optional if you added unit tests)
+# [Example] Portforward to stage and verify result on localhost:8080/test
+
+Ref:
+# Provide links or keys to any relevant tickets, articles or other resources
+# [Example] Ref: LOG-XXXX
+
+Semver:
+# Provide Semver update
+# [Example] Semver: major
+
+# --- COMMIT END ---
+# Type can be
+#    feat     (new feature)
+#    fix      (bug fix)
+#    refactor (refactoring production code)
+#    style    (formatting, missing semi colons, etc; no code change)
+#    bump     (update version of repo or package)
+#    docs     (changes to documentation)
+#    test     (adding or refactoring tests; no production code change)
+#    chore    (updating grunt tasks etc; no production code change)
+# --------------------
+# Semver can be
+#    major    (when you make incompatible API changes)
+#    minor    (when you add functionality in a backwards-compatible manner)
+#    patch    (when you make backwards-compatible bug fixes)
+# --------------------
+# Remember to
+#   - Subject line must be under 72 characters
+#   - Use the imperative mood in the subject line
+#   - Separate subject from body with a blank line
+#   - Use the body to explain what and why vs. how
+#   - If Semver is major, explain the change with BREAKING CHANGE
+#   - Can use multiple lines with "-" for bullet points in body
+# --------------------
+# For updated template, visit:
+# https://gist.github.com/shahvicky/16a8d2195eb03bb6c2730e2080f2e25f
+# Licence CC
