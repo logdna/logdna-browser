@@ -8,7 +8,10 @@ const MAX_BACK_OFF = 60000; // 60 sec
 
 const MAX_FETCH_ERROR_RETRY = 30;
 
-const HOSTNAME_CHECK = new RegExp('^([a-zA-Z0-9\\.\\:\\-\\_])*$');
+const HOSTNAME_CHECK = new RegExp(
+  '^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\\.)*' +
+    '([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$',
+);
 
 export {
   DEFAULT_INGESTION_URL,
