@@ -32,13 +32,13 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
   // Defaults
   private options: LogDNABrowserOptionsT = {
     url: DEFAULT_INGESTION_URL,
-    hostname: window.location.host,
+    hostname: 'logdna-browser-logger',
     flushInterval: LOG_LINE_FLUSH_TIMEOUT,
     enableStacktrace: true,
     enableIpAddress: false,
     sampleRate: SAMPLE_RATE,
     tags: [],
-    app: 'logdna-browser-logger',
+    app: window.location.host,
     plugins: [],
     console: true,
     globalErrorHandlers: true,
@@ -78,7 +78,7 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
     this.staticContext = this.getStaticContext();
 
     this.logger = new Logger(ingestionKey, {
-      hostname: this.options.hostname || window.location.host,
+      hostname: this.options.hostname || 'logdna-browser-logger',
       url: this.options.url,
       flushInterval: this.options.flushInterval,
       tags: utils.parseTags(this.options.tags),

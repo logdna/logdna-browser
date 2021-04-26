@@ -3,21 +3,14 @@ console.error = jest.fn();
 
 describe('Utils', () => {
   describe('validateHostname', () => {
-    ['123@!#!@'].forEach(hostname => {
-      it(`${hostname} should throw error with invalid hostname`, () => {
+    ['123@!#!@', '--', 'my-app-', 'app_asdf'].forEach(hostname => {
+      it('should throw error with invalid hostname', () => {
         expect(utils.validateHostname(hostname)).toBeFalsy();
       });
     });
 
-    [
-      'logdna-web',
-      'web',
-      'my-app-a',
-      '10.10.10.10',
-      '10.10.10.10:123',
-      'www.myapp.com',
-    ].forEach(hostname => {
-      it(`${hostname} should return true with a valid host name`, () => {
+    ['logdna-web', 'web', 'my-app-a', 'asdf.asdf.asdf'].forEach(hostname => {
+      it('should return true with a valid host name', () => {
         expect(utils.validateHostname(hostname)).toBeTruthy();
       });
     });

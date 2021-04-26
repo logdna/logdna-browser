@@ -26,7 +26,7 @@ Browser Logger is in Beta - API will evolve as we continue to develop and refine
 Using NPM:
 
 ```
-npm install @logdna/browser 
+npm install @logdna/browser
 ```
 
 Using Yarn:
@@ -178,9 +178,9 @@ logdna.init(LOGDNA_INGESTION_KEY, {
 
 | options                                               | default value                               | type               | description                                                                                                                                                                                                                                                        |
 | ----------------------------------------------------- | ------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `app`                                                 | logdna-browser-logger                       | string             | Name of your application                                                                                                                                                                                                                                           |
+| `app`                                                 | `window.location.hostname`                  | string             | Name of your application                                                                                                                                                                                                                                           |
 | `env`                                                 |                                             | string             | An environment label attached to each message (ex. `production`, `staging`)                                                                                                                                                                                        |
-| `hostname`                                            | `window.location.hostname`                  | string             | A hostname associated with each log line, populates the `Source` field in the LogDNA UI. Valid characters are letters, numbers, `:`, `-`, `_`, and `.`                                                                                                             |
+| `hostname`                                            | logdna-browser-logger                       | string             | A hostname associated with each log line, populates the Source field in the LogDNA UI.                                                                                                                                                                             |
 | `tags`                                                | 'LogDNA-Browser'                            | string or string[] | Add custom tags used in the LogDNA log line interface. Will always contain `LogDNA-Browser`.                                                                                                                                                                       |
 | `enableStacktrace`                                    | `true`                                      | boolean            | Enable adding stack traces for each log message                                                                                                                                                                                                                    |
 | `console`                                             | `true`                                      | boolean or object  | Enable sending console message to LogDNA for all supported methods or an options object                                                                                                                                                                            |
@@ -206,6 +206,7 @@ LogDNA's Browser Logger will buffer log message going to LogDNA, the default buf
 ## Unloading websites
 
 The LogDNA Browser Logger will attempt to flush the logs before the page unloads. This is done via the [keepalive](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#:~:text=keepalive) `fetch` requests flag. There is a 64kb internal `fetch` quota limit for **keep-alive** requests. Any request over that will result in a `network error` message as per the `fetch` spec.
+
 ## Failures
 
 If there are failures when sending log lines to LogDNA the logger will attempt to retry sending the logs up to 30 times. After 30 failures the Browser Logger will attempt to store log lines in the browsers local storage. Once the browser is refreshed (for SPA) or a new page is loaded (standard web app) then the app will reattempt to send the logs. If for some reason local storage is disabled or not available log lines will be dropped.
