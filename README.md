@@ -42,7 +42,8 @@ yarn add @logdna/browser
 ```js
 import logdna from '@logdna/browser';
 
-const LOGDNA_INGESTION_KEY = '123';
+// Found in Settings > Organization > API Keys
+const LOGDNA_INGESTION_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
 logdna.init(LOGDNA_INGESTION_KEY).addContext({
   // Context is appended to the metadata of each message sent to LogDNA
@@ -182,7 +183,7 @@ logdna.init(LOGDNA_INGESTION_KEY, {
 | `env`                                                 |                                             | string             | An environment label attached to each message (ex. `production`, `staging`)                                                                                                                                                                                        |
 | `hostname`                                            | logdna-browser-logger                       | string             | A hostname associated with each log line, populates the Source field in the LogDNA UI.                                                                                                                                                                             |
 | `tags`                                                | 'LogDNA-Browser'                            | string or string[] | Add custom tags used in the LogDNA log line interface. Will always contain `LogDNA-Browser`.                                                                                                                                                                       |
-| `enableStacktrace`                                    | `true`                                      | boolean            | Enable adding stack traces for each log message                                                                                                                                                                                                                    |
+| `enableStacktrace`                                    | `true`                                      | boolean            | Enable adding stack traces for each log message (does not affect error stack traces)                                                                                                                                                                               |
 | `console`                                             | `true`                                      | boolean or object  | Enable sending console message to LogDNA for all supported methods or an options object                                                                                                                                                                            |
 | `console.enable`                                      | `false`                                     | boolean            | Enable sending console message to LogDNA                                                                                                                                                                                                                           |
 | `console.integrations`                                | `['log', 'info', 'debug', 'warn', 'error']` | array              | Console methods to override for sending logs to LogDNA and to the console                                                                                                                                                                                          |
