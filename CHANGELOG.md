@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.0.2](https://github.com/logdna/logdna-browser/compare/v1.0.1...v1.0.2) (2021-04-26)
+
+
+### Bug Fixes
+
+* Swap app and hostname values back to original [32438e7](https://github.com/logdna/logdna-browser/commit/32438e70ca23e45983b5d7b71d9995e3fbd9de65) - Terry Moore
+
 ## [1.0.1](https://github.com/logdna/logdna-browser/compare/v1.0.0...v1.0.1) (2021-04-22)
 
 
