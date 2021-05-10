@@ -1,4 +1,4 @@
-import { Plugin, ILogDNABrowserLogger, LogType } from '../index.d';
+import { Plugin, ILogDNABrowserLogger, LogType } from '../logdna.d';
 export type Options = {
   prefix?: String;
   logLevel?: LogType;

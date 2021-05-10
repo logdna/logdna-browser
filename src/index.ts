@@ -5,7 +5,7 @@ import {
   StaticContext,
   ILogDNABrowserLogger,
   Plugin,
-} from './index.d';
+} from './logdna.d';
 import utils from './utils';
 import {
   DEFAULT_INGESTION_URL,

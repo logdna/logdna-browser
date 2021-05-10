@@ -1,4 +1,4 @@
-import { Plugin, ILogDNABrowserLogger } from '../index.d';
+import { Plugin, ILogDNABrowserLogger } from '../logdna.d';
 
 type LogType = 'log' | 'debug' | 'error' | 'warn' | 'info' | 'assert';
 
