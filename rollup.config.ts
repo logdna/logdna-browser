@@ -1,15 +1,29 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace';
+import copy from 'rollup-plugin-copy';
 
-export default {
-  input: `src/index.ts`,
-  output: {
-    dir: 'dist',
+const OUTPUT_DATA = [
+  {
+    input: 'src/index.ts',
+    file: 'dist/index.esm.js',
+    format: 'es',
+  },
+  {
+    input: 'src/index-umd.ts',
+    file: 'dist/index.js',
     format: 'umd',
+  },
+];
+
+const config = OUTPUT_DATA.map(({ file, format, input }) => ({
+  input,
+  output: {
+    file,
+    format,
     sourcemap: true,
     name: 'logdna',
   },
@@ -19,7 +33,9 @@ export default {
   },
   plugins: [
     json(),
-    typescript(),
+    typescript({
+      useTsconfigDeclarationDir: true,
+    }),
     commonjs(),
     resolve(),
     replace({
@@ -32,5 +48,10 @@ export default {
         comments: false,
       },
     }),
+    copy({
+      targets: [{ src: 'src/logdna.d.ts', dest: 'dist/types' }],
+    }),
   ],
-};
+}));
+
+export default config;

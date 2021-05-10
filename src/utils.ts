@@ -1,5 +1,5 @@
 import safeStringify from 'fast-safe-stringify';
-import { ContextT, LogDNABrowserOptionsT } from './index.d';
+import { ContextT, LogDNABrowserOptionsT } from './logdna.d';
 import { HOSTNAME_CHECK } from './constants';
 import { version } from '../package.json';
 
