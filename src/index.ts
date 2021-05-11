@@ -43,6 +43,7 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
     console: true,
     globalErrorHandlers: true,
     debug: false,
+    disabled: false,
   };
 
   init(
@@ -262,10 +263,12 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
     }
 
     if (
+      this.options.disabled ||
       !utils.includeInSampleRate(this.options.sampleRate, this.sampleRateScore)
     ) {
       return;
     }
+
     if (typeof lineContext !== 'object') {
       lineContext = { lineContext };
     }
@@ -333,3 +336,5 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
 }
 
 export default new LogDNABrowserLogger();
+
+export { LogDNABrowserLogger };

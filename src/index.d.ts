@@ -16,6 +16,7 @@ export type LogDNABrowserOptionsT = {
   console?: ConsoleOptions | boolean;
   globalErrorHandlers?: GlobalErrorHandlerOptions | boolean;
   debug?: boolean;
+  disabled?: boolean;
 };
 
 export type LoggerOptionsT = {

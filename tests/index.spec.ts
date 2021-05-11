@@ -1,15 +1,18 @@
 // @ts-nocheck
-import logdna from '../src/index';
+import { LogDNABrowserLogger } from '../src/index';
 
+let logdna;
 const API_KEY = '123123123123123';
 
 describe('LogDNA Browser Logger', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetAllMocks();
+    logdna = new LogDNABrowserLogger();
     // Reset registered plugins on each test
     logdna.plugins = [];
   });
+
   describe('validation', () => {
     it('should throw error when no api key is defined', () => {
       expect(() => logdna.init()).toThrow();
@@ -69,6 +72,22 @@ describe('LogDNA Browser Logger', () => {
           sampleRate: 50,
         }),
       ).not.toThrow();
+    });
+  });
+
+  describe('disabled option', () => {
+    it('should not call loglines when is disabled', () => {
+      const lbl = logdna.init('123', { disabled: true });
+      lbl.logger.logLines = jest.fn();
+      logdna.log('Test');
+      expect(lbl.logger.logLines).toHaveBeenCalledTimes(0);
+    });
+
+    it('should call loglines when disabled is false', () => {
+      const lbl = logdna.init('123', { disabled: false });
+      lbl.logger.logLines = jest.fn();
+      logdna.log('Test');
+      expect(lbl.logger.logLines).toHaveBeenCalledTimes(1);
     });
   });
 
