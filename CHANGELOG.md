@@ -1,5 +1,12 @@
 ## Changelog
 
+# [1.1.0](https://github.com/logdna/logdna-browser/compare/v1.0.3...v1.1.0) (2021-05-12)
+
+
+### Features
+
+* Add disabled option [373bdb6](https://github.com/logdna/logdna-browser/commit/373bdb67f3ee25bc21788c081879cdb733023939) - Terry Moore
+
 ## [1.0.3](https://github.com/logdna/logdna-browser/compare/v1.0.2...v1.0.3) (2021-05-12)
 
 
