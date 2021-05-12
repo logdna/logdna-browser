@@ -24,6 +24,7 @@ export type LoggerOptionsT = {
   hostname: string;
   flushInterval?: number;
   tags: string;
+  log: Function;
 };
 export type LogDNALogLine = {
   line: string;

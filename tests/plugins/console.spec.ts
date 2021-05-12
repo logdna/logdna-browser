@@ -1,5 +1,8 @@
 import Console, { DEFAULT_CONSOLE_METHODS } from '../../src/plugins/console';
 
+//@ts-ignore
+window.__LogDNA__ = {};
+
 describe('Console Plugin', () => {
   let logdna: any;
 

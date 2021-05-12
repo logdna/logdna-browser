@@ -11,9 +11,7 @@ import OfflineStorage from './offline-storage';
 
 export default class Logger {
   private ingestionKey: string;
-  private options: LoggerOptionsT & {
-    flushInterval: number;
-  };
+  private options: LoggerOptionsT;
   private logLinesBuffer: Array<any> = []; // TODO Add type
   private timer?: number;
 
@@ -57,7 +55,7 @@ export default class Logger {
     if (this.isUnderByteLimit(lines)) {
       await this.send(lines);
     } else if (lines.length === 1) {
-      throw Error(
+      this.options.log(
         `LogDNA Browser Logger was unable to send the previous log lines because the log size was greater than ${FLUSH_BYTE_LIMIT} bytes`,
       );
     } else {
@@ -154,11 +152,11 @@ export default class Logger {
         this.backOffInterval = 0;
       } else {
         if (response.status >= 400 && response.status < 500) {
-          throw Error(`${errorMsg}: ${response.statusText}`);
+          this.options.log(`${errorMsg}: ${response.statusText}`);
         } else if (response.status >= 500) {
           this.retryCount = this.retryCount + 1;
           if (this.retryCount > MAX_FETCH_ERROR_RETRY) {
-            throw Error(`${errorMsg}: ${response.statusText}`);
+            this.options.log(`${errorMsg}: ${response.statusText}`);
           } else {
             this.logLines(lines);
           }
@@ -170,7 +168,10 @@ export default class Logger {
       // performance issues or ddos-ing out api.
       this.loggerError = true;
       this.offlineStorage.addLines(lines);
-      window.console.error(
+
+      //@ts-ignore
+      const logger = window?.__LogDNA__?.console?.error || window.console.error;
+      logger(
         `LogDNA Browser Logger is unable to send logs to LogDNA. 
         Possible issues:
          - Your web apps url (${window?.location?.origin}) is not listed in your LogDNA account's CORS whitelist domains
@@ -180,9 +181,6 @@ export default class Logger {
 
          Error: ${error.message}
         `,
-      );
-      throw new Error(
-        'Shutting down LogDNA Browser Logger due to an issue. We will attempt to store log lines locally and resent when the connection is restored',
       );
     }
   }

@@ -40,6 +40,9 @@ class ConsolePlugin implements Plugin {
     const { log, debug, error, warn, info, assert } = window.console;
     const _windowConsole = { log, debug, error, warn, info, assert };
 
+    //@ts-ignore
+    window.__LogDNA__.console = _windowConsole;
+
     (integrations || [])
       .map((method: LogType): LogType => method.toLowerCase() as LogType)
       .forEach((method: LogType) => {

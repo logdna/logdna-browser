@@ -82,12 +82,11 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
       url: this.options.url,
       flushInterval: this.options.flushInterval,
       tags: utils.parseTags(this.options.tags),
+      log: this.error,
     });
-
+    utils.addDebugInfo(this.options, this.context, this.plugins);
     this.registerDefaultPlugins();
     this.registerPlugins(this.options.plugins);
-
-    utils.addDebugInfo(this.options, this.context, this.plugins);
 
     document.addEventListener('visibilitychange', async () => {
       if (document.visibilityState === 'hidden') {
