@@ -27,7 +27,11 @@ class OfflineStorage {
       return;
     }
     const stored = this.getLines();
-    window.localStorage.setItem(key, JSON.stringify(stored.concat(lines)));
+    try {
+      window.localStorage.setItem(key, JSON.stringify(stored.concat(lines)));
+    } catch (error) {
+      // This is to catch quota errors but we dont want to log them.
+    }
   }
 
   clear() {

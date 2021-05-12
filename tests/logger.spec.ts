@@ -5,12 +5,14 @@ import {
   LOG_LINE_FLUSH_TIMEOUT,
   MAX_FETCH_ERROR_RETRY,
 } from '../src/constants';
-import utils from '../src/utils';
+
+const log = jest.fn();
 
 const defaultOptions = {
   flushInterval: LOG_LINE_FLUSH_TIMEOUT,
   hostname: 'host',
   tags: 'LogDNA-Browser',
+  log,
 };
 
 describe('logger', () => {
@@ -175,7 +177,8 @@ describe('logger', () => {
           message: new Uint8Array(FLUSH_BYTE_LIMIT),
         },
       ];
-      await expect(() => logger.flush(lines)).rejects.toThrowError();
+      await logger.flush(lines);
+      expect(log).toHaveBeenCalledTimes(1);
     });
 
     it('should split the log lines array when they are too large', async () => {
@@ -218,16 +221,35 @@ describe('logger', () => {
       logger.offlineStorage.addLines = jest.fn();
     });
 
-    it('network error', async () => {
+    it('network error should send to window.console', async () => {
       global.fetch = jest.fn(() =>
         Promise.reject({
           json: () => Promise.resolve({}),
         }),
       );
-      await expect(() => logger.send(lines)).rejects.toThrowError();
+      await logger.send(lines);
       expect(console.error).toHaveBeenCalled();
       expect(logger.loggerError).toBeTruthy();
       expect(logger.offlineStorage.addLines).toHaveBeenCalledTimes(1);
+    });
+
+    it('network error should send to backed up window console when console integration is enabled', async () => {
+      const errorLog = jest.fn();
+      window.__LogDNA__ = {
+        console: {
+          error: errorLog,
+        },
+      };
+      global.fetch = jest.fn(() =>
+        Promise.reject({
+          json: () => Promise.resolve({}),
+        }),
+      );
+      await logger.send(lines);
+      expect(errorLog).toHaveBeenCalled();
+      expect(logger.loggerError).toBeTruthy();
+      expect(logger.offlineStorage.addLines).toHaveBeenCalledTimes(1);
+      window.__LogDNA__ = undefined;
     });
 
     it('network error called twice should add lines to storage and call fetch once', async () => {
@@ -236,7 +258,7 @@ describe('logger', () => {
           json: () => Promise.resolve({}),
         }),
       );
-      await expect(() => logger.send(lines)).rejects.toThrowError();
+      await logger.send(lines);
       expect(console.error).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(logger.loggerError).toBeTruthy();
@@ -278,6 +300,19 @@ describe('logger', () => {
       expect(logger.backOffInterval).toEqual(0);
     });
 
+    it('400 error should send logs back into pipeline', async () => {
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: false,
+          status: 400,
+          json: () => Promise.resolve({}),
+        }),
+      );
+      await logger.send(lines);
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+      expect(log).toHaveBeenCalledTimes(1);
+    });
+
     it('500 error should send logs back into pipeline', async () => {
       global.fetch = jest.fn(() =>
         Promise.resolve({
@@ -300,8 +335,8 @@ describe('logger', () => {
         }),
       );
       logger.retryCount = MAX_FETCH_ERROR_RETRY + 1;
-      await expect(() => logger.send(lines)).rejects.toThrowError();
-      expect(logger.offlineStorage.addLines).toHaveBeenCalledTimes(1);
+      await logger.send(lines);
+      expect(log).toHaveBeenCalledTimes(1);
     });
   });
 });
