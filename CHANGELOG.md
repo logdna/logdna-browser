@@ -1,5 +1,18 @@
 ## Changelog
 
+## [1.0.3](https://github.com/logdna/logdna-browser/compare/v1.0.2...v1.0.3) (2021-05-12)
+
+
+### Bug Fixes
+
+* Localstorage quota limit and less chatty when network error [82e67eb](https://github.com/logdna/logdna-browser/commit/82e67ebc21b88cdaf7a30193c977dfabe82b9e10) - Terry Moore
+
+
+### Miscellaneous
+
+* Added Beta shield icon [d56f106](https://github.com/logdna/logdna-browser/commit/d56f106e30e76b994b3f13e02a17748b392727cd) - Terry Moore
+* Minor README improvements [baa23e4](https://github.com/logdna/logdna-browser/commit/baa23e4ce97933791a22e4c0a87123d2c7297adc) - Michael Shi
+
 ## [1.0.2](https://github.com/logdna/logdna-browser/compare/v1.0.1...v1.0.2) (2021-04-26)
 
 
