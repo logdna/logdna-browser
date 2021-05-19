@@ -1,7 +1,7 @@
 import safeStringify from 'fast-safe-stringify';
-import { ContextT, LogDNABrowserOptionsT } from './logdna.d';
-import { HOSTNAME_CHECK } from './constants';
 import { version } from '../package.json';
+import { HOSTNAME_CHECK } from './constants';
+import { ContextT, LogDNABrowserOptionsT } from './types';
 
 const hasSessionStorage = !!window.sessionStorage;
 const SESSION_SCORE_KEY = 'logdna::browser::sessionscore';
@@ -91,7 +91,7 @@ const getIpAddress = async (): Promise<string | undefined> => {
 
     // This doesnt validate if its a correct ip address
     const regex = /ip=([\d\.a-fA-f:]+)/;
-    var ip = regex.exec(text);
+    let ip = regex.exec(text);
     return ip ? ip[1] : undefined;
   } catch (error) {
     console.warn('LogDNA Browser Logger is unable to retrieve the ip address');
@@ -114,8 +114,7 @@ const getIpAddress = async (): Promise<string | undefined> => {
  * @returns {Number} calculated sleep time
  */
 function backOffWithJitter(base: number, cap: number, lastSleep: number) {
-  const sleep = Math.min(cap, _randomBetween(base, lastSleep * 3));
-  return sleep;
+  return Math.min(cap, _randomBetween(base, lastSleep * 3));
 }
 
 function _randomBetween(min: number, max: number) {

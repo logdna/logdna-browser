@@ -1,23 +1,33 @@
 import { detect } from 'detect-browser';
 import {
-  ContextT,
-  LogDNABrowserOptionsT,
-  StaticContext,
-  ILogDNABrowserLogger,
-  Plugin,
-} from './logdna.d';
-import utils from './utils';
-import {
   DEFAULT_INGESTION_URL,
   LOG_LINE_FLUSH_TIMEOUT,
   SAMPLE_RATE,
 } from './constants';
+import {
+  DuplicatePluginMethodError,
+  DuplicatePluginRegistrationError,
+  InvalidHostnameError,
+  InvalidSampleRateError,
+  MissingPluginInitError,
+  MissingPluginNameError,
+  PrematureLogLineError,
+  UndefinedIngestionKeyError,
+} from './exceptions';
 
 import Logger from './logger';
-import SessionManager from './session-manager';
+import allPlugins from './plugins';
 import ConsolePlugin from './plugins/console';
 import GlobalErrorHandlerPlugin from './plugins/global-handlers';
-import allPlugins from './plugins';
+import SessionManager from './session-manager';
+import {
+  ContextT,
+  ILogDNABrowserLogger,
+  LogDNABrowserOptionsT,
+  Plugin,
+  StaticContext,
+} from './types';
+import utils from './utils';
 
 class LogDNABrowserLogger implements ILogDNABrowserLogger {
   Plugins = allPlugins;
@@ -53,16 +63,14 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
     this.options = { ...this.options, ...options };
 
     if (ingestionKey == null) {
-      throw new Error('Ingestion key can not be undefined when calling init');
+      throw new UndefinedIngestionKeyError();
     }
 
     if (
       this.options.hostname &&
       !utils.validateHostname(this.options.hostname)
     ) {
-      throw new Error(
-        `LogDNA Browser Logger: \`${this.options.hostname}\` is not a valid hostname, see documentation for the \`hostname\` configuration option for details.`,
-      );
+      throw new InvalidHostnameError(this.options.hostname);
     }
 
     if (
@@ -71,9 +79,7 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
       this.options.sampleRate > 100 ||
       isNaN(this.options.sampleRate)
     ) {
-      throw new Error(
-        `LogDNA Browser Logger: \`sampleRate\` option must be a number between 0 and 100`,
-      );
+      throw new InvalidSampleRateError();
     }
 
     this.staticContext = this.getStaticContext();
@@ -184,9 +190,7 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
   registerMethod(name: string, fn: Function) {
     // @ts-ignore
     if (this[name]) {
-      throw Error(
-        'A LogDNA Browser Logger plugin is attempting to register a method that already exists.',
-      );
+      throw new DuplicatePluginMethodError();
     }
     // @ts-ignore
     this[name] = fn;
@@ -228,21 +232,15 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
 
   private registerPlugin(plugin: Plugin) {
     if (!plugin.name) {
-      throw new Error(
-        'A LogDNA Browser Logger plugin must contain a name property',
-      );
+      throw new MissingPluginNameError();
     }
 
     if (typeof plugin.init !== 'function') {
-      throw new Error(
-        'A LogDNA Browser Logger plugin must contain an init function',
-      );
+      throw new MissingPluginInitError();
     }
 
     if (this.plugins.includes(plugin.name)) {
-      throw Error(
-        `The plugin ${plugin.name} is already registered with LogDNA Browser`,
-      );
+      throw new DuplicatePluginRegistrationError(plugin.name);
     }
 
     this.plugins.push(plugin.name);
@@ -257,9 +255,7 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
 
   private logLines(level: string, message: any, lineContext?: any) {
     if (this.logger == null) {
-      throw new Error(
-        'LogDNA Browser Logger: Attempting send to log lines before calling `.init()`',
-      );
+      throw new PrematureLogLineError();
     }
 
     if (

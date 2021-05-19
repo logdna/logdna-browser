@@ -1,19 +1,19 @@
-import { Plugin, ILogDNABrowserLogger, LogType } from '../logdna.d';
-export type Options = {
-  prefix?: String;
-  logLevel?: LogType;
-};
+import {
+  Plugin,
+  ILogDNABrowserLogger,
+  PerformanceMeasureOptions,
+} from '../types';
 
-const NAMESPACE = 'logdna:';
+const NAMESPACE: string = 'logdna:';
 
 /* istanbul ignore next */
 class PerformanceMeasurePlugin implements Plugin {
   name = 'PerformanceMeasurePlugin';
   logdna: any;
-  options: Options;
+  options: PerformanceMeasureOptions;
 
-  constructor(options: Options = {}) {
-    const defaultOptions: Options = {
+  constructor(options: PerformanceMeasureOptions = {}) {
+    const defaultOptions: PerformanceMeasureOptions = {
       prefix: 'Performance Measurement',
       logLevel: 'debug',
     };

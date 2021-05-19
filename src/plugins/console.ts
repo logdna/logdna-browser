@@ -1,13 +1,15 @@
-import { Plugin, ILogDNABrowserLogger } from '../logdna.d';
+import {
+  InvalidConsoleIntegrationError,
+  InvalidConsoleMethodError,
+} from '../exceptions';
+import {
+  ConsoleOptions,
+  ILogDNABrowserLogger,
+  ConsoleLogType,
+  Plugin,
+} from '../types';
 
-type LogType = 'log' | 'debug' | 'error' | 'warn' | 'info' | 'assert';
-
-export type Options = {
-  integrations?: LogType[];
-  enable?: boolean;
-};
-
-export const DEFAULT_CONSOLE_METHODS: LogType[] = [
+export const DEFAULT_CONSOLE_METHODS: ConsoleLogType[] = [
   'log',
   'debug',
   'error',
@@ -21,7 +23,7 @@ class ConsolePlugin implements Plugin {
   options;
 
   constructor(
-    options: Options = {
+    options: ConsoleOptions = {
       integrations: DEFAULT_CONSOLE_METHODS,
     },
   ) {
@@ -32,9 +34,7 @@ class ConsolePlugin implements Plugin {
     const { integrations = DEFAULT_CONSOLE_METHODS } = this.options;
 
     if (!Array.isArray(integrations)) {
-      throw new Error(
-        'LogDNA Browser Logger console integration types must be an array',
-      );
+      throw new InvalidConsoleIntegrationError();
     }
 
     const { log, debug, error, warn, info, assert } = window.console;
@@ -44,12 +44,13 @@ class ConsolePlugin implements Plugin {
     window.__LogDNA__.console = _windowConsole;
 
     (integrations || [])
-      .map((method: LogType): LogType => method.toLowerCase() as LogType)
-      .forEach((method: LogType) => {
+      .map(
+        (method: ConsoleLogType): ConsoleLogType =>
+          method.toLowerCase() as ConsoleLogType,
+      )
+      .forEach((method: ConsoleLogType) => {
         if (!DEFAULT_CONSOLE_METHODS.includes(method)) {
-          throw Error(
-            'LogDNA Browser Logger console plugin was passed an invalid console methods',
-          );
+          throw new InvalidConsoleMethodError();
         }
 
         window.console[method] = (...args: any[]) => {

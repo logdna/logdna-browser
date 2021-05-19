@@ -1,9 +1,8 @@
-import { Plugin, ILogDNABrowserLogger } from '../logdna.d';
-
-export type Options = {
-  enableErrorHandler?: boolean;
-  enableUnhandledPromiseRejection?: boolean;
-};
+import {
+  GlobalErrorHandlerOptions,
+  ILogDNABrowserLogger,
+  Plugin,
+} from '../types';
 
 class GlobalErrorHandlerPlugin implements Plugin {
   name = 'GlobalErrorHandlerPlugin';
@@ -11,7 +10,7 @@ class GlobalErrorHandlerPlugin implements Plugin {
   options;
 
   constructor(
-    options: Options = {
+    options: GlobalErrorHandlerOptions = {
       enableErrorHandler: true,
       enableUnhandledPromiseRejection: true,
     },

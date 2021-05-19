@@ -1,10 +1,9 @@
-import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
 import json from '@rollup/plugin-json';
-import { terser } from 'rollup-plugin-terser';
+import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import copy from 'rollup-plugin-copy';
+import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
 
 const OUTPUT_DATA = [
   {
@@ -47,9 +46,6 @@ const config = OUTPUT_DATA.map(({ file, format, input }) => ({
         // the bundled JS
         comments: false,
       },
-    }),
-    copy({
-      targets: [{ src: 'src/logdna.d.ts', dest: 'dist/types' }],
     }),
   ],
 }));

@@ -1,4 +1,4 @@
-import { LoggerOptionsT, LogDNALogLine } from './logdna.d';
+import { LoggerOptionsT, LogDNALogLine } from './types';
 import {
   LOG_LINE_FLUSH_TIMEOUT,
   FLUSH_BYTE_LIMIT,
