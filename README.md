@@ -1,6 +1,10 @@
 # @logdna/browser
 
 [![Public Beta](https://img.shields.io/badge/-Public%20Beta-404346?style=flat)](#)
+![npm](https://img.shields.io/npm/v/@logdna/browser)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@logdna/browser)
+![GitHub issues](https://img.shields.io/github/issues-raw/logdna/logdna-browser)
+![npm](https://img.shields.io/npm/dm/@logdna/browser)
 
 A code library for implementing frontend browser logging and exception capturing in LogDNA. Capture browser errors and log messages from your console and centralize them to your LogDNA instance. Optionally, use the [LogDNA Browser Logger Template](https://docs.logdna.com/page/logdna-browser-logger-template) to get out-of-the-box Views, Boards, and Screens to analyze your browser logs.
 
