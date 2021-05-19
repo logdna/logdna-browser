@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.1.1](https://github.com/logdna/logdna-browser/compare/v1.1.0...v1.1.1) (2021-05-19)
+
+
+### Bug Fixes
+
+* update TS types files for better TS support [8e2a5aa](https://github.com/logdna/logdna-browser/commit/8e2a5aafc960d11dc542be6c660b8766dbac9811) - Terry Moore
+
 # [1.1.0](https://github.com/logdna/logdna-browser/compare/v1.0.3...v1.1.0) (2021-05-12)
 
 
