@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.1.2](https://github.com/logdna/logdna-browser/compare/v1.1.1...v1.1.2) (2021-05-21)
+
+
+### Chores
+
+* add badges to readme [7088012](https://github.com/logdna/logdna-browser/commit/7088012f3372cadc6301e3bc7282422471d6f8a5) - Terry Moore
+
 ## [1.1.1](https://github.com/logdna/logdna-browser/compare/v1.1.0...v1.1.1) (2021-05-19)
 
 
