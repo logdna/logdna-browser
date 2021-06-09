@@ -52,6 +52,8 @@ class LogDNABrowserLogger implements ILogDNABrowserLogger {
   ): LogDNABrowserLogger {
     this.options = { ...this.options, ...options };
 
+    utils.clearOfflineStorage();
+
     if (ingestionKey == null) {
       throw new Error('Ingestion key can not be undefined when calling init');
     }

@@ -7,7 +7,6 @@ import {
   MAX_BACK_OFF,
 } from './constants';
 import utils from './utils';
-import OfflineStorage from './offline-storage';
 
 export default class Logger {
   private ingestionKey: string;
@@ -18,8 +17,6 @@ export default class Logger {
   private loggerError = false;
   private retryCount = 0;
   private backOffInterval = 0;
-  private offlineStorage = new OfflineStorage();
-  private isOnline = navigator.onLine;
 
   constructor(ingestionKey: string, options: LoggerOptionsT) {
     this.ingestionKey = ingestionKey;
@@ -32,8 +29,6 @@ export default class Logger {
           ? LOG_LINE_FLUSH_TIMEOUT
           : options.flushInterval,
     };
-
-    this.sendOfflineLogs();
   }
 
   private overflowBuffer(logLines: LogDNALogLine[]) {
@@ -102,28 +97,8 @@ export default class Logger {
     return utils.jsonByteSize(buffer) < FLUSH_BYTE_LIMIT;
   }
 
-  private sendOfflineLogs() {
-    const offlineItems = this.offlineStorage.getLines();
-    if (Array.isArray(offlineItems) && offlineItems.length > 0) {
-      this.logLines(offlineItems);
-    }
-    this.offlineStorage.clear();
-  }
-
-  private checkOnlineStatus() {
-    if (!navigator.onLine) {
-      this.isOnline = false;
-      return false;
-    } else if (navigator.onLine && !this.isOnline) {
-      this.sendOfflineLogs();
-      return true;
-    }
-    return true;
-  }
-
   private async send(lines: LogDNALogLine[]): Promise<any> {
-    if (this.loggerError || !this.checkOnlineStatus()) {
-      this.offlineStorage.addLines(lines);
+    if (this.loggerError) {
       return;
     }
 
@@ -167,7 +142,6 @@ export default class Logger {
       // This is to avoid ending up in a circular loop of error logs and causing app
       // performance issues or ddos-ing out api.
       this.loggerError = true;
-      this.offlineStorage.addLines(lines);
 
       //@ts-ignore
       const logger = window?.__LogDNA__?.console?.error || window.console.error;

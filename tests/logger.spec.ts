@@ -120,50 +120,6 @@ describe('logger', () => {
     });
   });
 
-  describe('when calling sendOfflineLogs', () => {
-    let logger;
-    const lines = [{ message: 'Test' }];
-
-    it('should send logLines', () => {
-      logger = new Logger('APIKEY', defaultOptions);
-      logger.logLines = jest.fn();
-      window.localStorage.setItem(
-        'logdna::browser::offline-cache',
-        JSON.stringify(lines),
-      );
-      logger.sendOfflineLogs();
-
-      expect(logger.logLines).toHaveBeenCalledWith(lines);
-    });
-  });
-
-  describe('when checking online status', () => {
-    let logger;
-
-    beforeEach(() => {
-      logger = new Logger('APIKEY', defaultOptions);
-    });
-
-    it('should return true when online', () => {
-      jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
-      expect(logger.checkOnlineStatus()).toBeTruthy();
-    });
-
-    it('should return false when offline', () => {
-      jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false);
-      expect(logger.checkOnlineStatus()).toBeFalsy();
-    });
-
-    it('should send loglines when it comes back online', () => {
-      logger.sendOfflineLogs = jest.fn();
-      jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false);
-      expect(logger.checkOnlineStatus()).toBeFalsy();
-      jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
-      expect(logger.checkOnlineStatus()).toBeTruthy();
-      expect(logger.sendOfflineLogs).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('overflow buffer', () => {
     let logger;
 
@@ -218,7 +174,6 @@ describe('logger', () => {
       jest.clearAllMocks();
       logger = new Logger('APIKEY', defaultOptions);
       console.error = jest.fn();
-      logger.offlineStorage.addLines = jest.fn();
     });
 
     it('network error should send to window.console', async () => {
@@ -230,7 +185,6 @@ describe('logger', () => {
       await logger.send(lines);
       expect(console.error).toHaveBeenCalled();
       expect(logger.loggerError).toBeTruthy();
-      expect(logger.offlineStorage.addLines).toHaveBeenCalledTimes(1);
     });
 
     it('network error should send to backed up window console when console integration is enabled', async () => {
@@ -248,7 +202,6 @@ describe('logger', () => {
       await logger.send(lines);
       expect(errorLog).toHaveBeenCalled();
       expect(logger.loggerError).toBeTruthy();
-      expect(logger.offlineStorage.addLines).toHaveBeenCalledTimes(1);
       window.__LogDNA__ = undefined;
     });
 
@@ -262,9 +215,7 @@ describe('logger', () => {
       expect(console.error).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(logger.loggerError).toBeTruthy();
-      expect(logger.offlineStorage.addLines).toHaveBeenCalledTimes(1);
       await logger.send(lines);
-      expect(logger.offlineStorage.addLines).toHaveBeenCalledTimes(2);
       expect(global.fetch).toHaveBeenCalledTimes(1);
     });
 
@@ -324,19 +275,6 @@ describe('logger', () => {
       await logger.send(lines);
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(logger.logLinesBuffer).toEqual(lines);
-    });
-
-    it('500 error when retryCount has been reached will send logs to offline storage', async () => {
-      global.fetch = jest.fn(() =>
-        Promise.resolve({
-          ok: false,
-          status: 500,
-          json: () => Promise.resolve({}),
-        }),
-      );
-      logger.retryCount = MAX_FETCH_ERROR_RETRY + 1;
-      await logger.send(lines);
-      expect(log).toHaveBeenCalledTimes(1);
     });
   });
 });

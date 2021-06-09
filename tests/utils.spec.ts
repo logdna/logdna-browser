@@ -238,4 +238,17 @@ describe('Utils', () => {
       expect(val).toBeGreaterThanOrEqual(base);
     });
   });
+
+  describe('Clear offline storage', () => {
+    it('should clear the offline storage', () => {
+      window.localStorage.setItem('logdna::browser::offline-cache', 'data');
+      expect(
+        window.localStorage.getItem('logdna::browser::offline-cache'),
+      ).toEqual('data');
+      utils.clearOfflineStorage();
+      expect(
+        window.localStorage.getItem('logdna::browser::offline-cache'),
+      ).toBeNull();
+    });
+  });
 });

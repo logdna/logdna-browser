@@ -5,6 +5,16 @@ import { version } from '../package.json';
 
 const hasSessionStorage = !!window.sessionStorage;
 const SESSION_SCORE_KEY = 'logdna::browser::sessionscore';
+const OFFLINE_STORAGE_KEY = 'logdna::browser::offline-cache';
+
+// This is to remove any offline storage data that was created
+// when we were using offline caching which was filling
+// up the browser localstorage
+const clearOfflineStorage = () => {
+  try {
+    window.localStorage.removeItem(OFFLINE_STORAGE_KEY);
+  } catch (error) {}
+};
 
 const validateHostname = (hostname: string) => HOSTNAME_CHECK.test(hostname);
 
@@ -149,4 +159,5 @@ export default {
   stringify,
   backOffWithJitter,
   isBrowserStorageAvailable,
+  clearOfflineStorage,
 };

@@ -216,11 +216,7 @@ The LogDNA Browser Logger will attempt to flush the logs before the page unloads
 
 ## Failures
 
-If there are failures when sending log lines to LogDNA the logger will attempt to retry sending the logs up to 30 times. After 30 failures the Browser Logger will attempt to store log lines in the browsers local storage. Once the browser is refreshed (for SPA) or a new page is loaded (standard web app) then the app will reattempt to send the logs. If for some reason local storage is disabled or not available log lines will be dropped.
-
-## Offline
-
-The LogDNA Browser Logger will check if the browser is online via `navigator.onLine`. If this return false, then the Logger will attempt to store log lines in local storage and will resend when the browser come back online.
+If there are failures when sending log lines to LogDNA the logger will attempt to retry sending the logs up to 30 times.
 
 ## Debug helpers
 
