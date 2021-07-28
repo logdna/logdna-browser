@@ -1,4 +1,4 @@
-import safeStringify from 'fast-safe-stringify';
+import safeStringify from 'safe-stable-stringify';
 import { ContextT, LogDNABrowserOptionsT } from './logdna.d';
 import { HOSTNAME_CHECK } from './constants';
 import { version } from '../package.json';
