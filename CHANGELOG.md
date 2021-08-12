@@ -1,5 +1,17 @@
 ## Changelog
 
+## [1.1.3](https://github.com/logdna/logdna-browser/compare/v1.1.2...v1.1.3) (2021-08-12)
+
+
+### Bug Fixes
+
+* **offlinecache**: Removal of offline cache [2b9f502](https://github.com/logdna/logdna-browser/commit/2b9f50267b09b5adde4c053466cb7d0d70391110) - Terry Moore
+
+
+### Miscellaneous
+
+* patch [d8ab420](https://github.com/logdna/logdna-browser/commit/d8ab420527d643b3bb728e64fccf573463ac7535) - Terry Moore
+
 ## [1.1.2](https://github.com/logdna/logdna-browser/compare/v1.1.1...v1.1.2) (2021-05-21)
 
 
