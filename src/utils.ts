@@ -9,7 +9,7 @@ const OFFLINE_STORAGE_KEY = 'logdna::browser::offline-cache';
 
 // This is to remove any offline storage data that was created
 // when we were using offline caching which was filling
-// up the browser localstorage
+// up the browser local storage
 const clearOfflineStorage = () => {
   try {
     window.localStorage.removeItem(OFFLINE_STORAGE_KEY);
