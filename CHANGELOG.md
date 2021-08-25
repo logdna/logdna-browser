@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.1.4](https://github.com/logdna/logdna-browser/compare/v1.1.3...v1.1.4) (2021-08-25)
+
+
+### Bug Fixes
+
+* **package**: Add main to package json file [372bc55](https://github.com/logdna/logdna-browser/commit/372bc553a76b501629bea5fe6303b074b5197e55) - Terry Moore, closes: [#17](https://github.com/logdna/logdna-browser/issues/17) [#20](https://github.com/logdna/logdna-browser/issues/20)
+
 ## [1.1.3](https://github.com/logdna/logdna-browser/compare/v1.1.2...v1.1.3) (2021-08-12)
 
 
