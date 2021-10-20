@@ -13,7 +13,7 @@ const OUTPUT_DATA = [
     format: 'es',
   },
   {
-    input: 'src/index-umd.ts',
+    input: 'src/index.ts',
     file: 'dist/index.js',
     format: 'umd',
   },
@@ -39,6 +39,7 @@ const config = OUTPUT_DATA.map(({ file, format, input }) => ({
     commonjs(),
     resolve(),
     replace({
+      preventAssignment: true,
       'process.env.FORCE_SIMILAR_INSTEAD_OF_MAP': 'false',
     }),
     terser({

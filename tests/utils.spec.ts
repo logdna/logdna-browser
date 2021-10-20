@@ -29,9 +29,7 @@ describe('Utils', () => {
           },
         },
       };
-      expect(utils.stringify(encode)).toEqual(
-        '{"data":{"obj":{"obj":"[Circular]"}}}',
-      );
+      expect(utils.stringify(encode)).toEqual('{"data":{"obj":{"obj":"[Circular]"}}}');
     });
   });
 
@@ -145,86 +143,28 @@ describe('Utils', () => {
 
   describe('parseTags', () => {
     it('should add LogDNA-Browser when no tags are passed', () => {
-      //@ts-ignore
       const tags = utils.parseTags();
       expect(tags).toEqual('LogDNA-Browser');
     });
 
     it('should add LogDNA-Browser along with the string of tags', () => {
-      //@ts-ignore
       const tags = utils.parseTags('tag');
       expect(tags).toEqual('LogDNA-Browser,tag');
     });
 
     it('should add LogDNA-Browser when passing an array of tags', () => {
-      //@ts-ignore
       const tags = utils.parseTags(['tag1', 'tag2']);
       expect(tags).toEqual('LogDNA-Browser,tag1,tag2');
     });
 
     it('should pass LogDNA-Browser as a tag and show a console error when passing non string', () => {
       //@ts-ignore
-      const tags = utils.parseTags(123);
-      expect(tags).toEqual('LogDNA-Browser');
-      expect(console.error).toBeCalled();
+      expect(() => utils.parseTags(123)).toThrowError();
     });
 
     it('should pass LogDNA-Browser as a tag and show a console error when passing an array with non string values', () => {
       //@ts-ignore
-      const tags = utils.parseTags(['abc', 123]);
-      expect(tags).toEqual('LogDNA-Browser');
-      expect(console.error).toBeCalled();
-    });
-  });
-
-  describe('LogDNA Browser debug', () => {
-    beforeEach(() => {
-      utils.addDebugInfo(
-        {
-          flushInterval: 123,
-          debug: false,
-        },
-        {
-          user: 'Tom Hanks',
-        },
-        ['ConsolePlugin', 'GlobalErrorHandlerPlugin'],
-      );
-    });
-    it('should show the current configuration', () => {
-      // @ts-ignore
-      const config = window.__LogDNA__.showConfig();
-      expect(config).toMatchObject({
-        flushInterval: 123,
-        debug: false,
-      });
-    });
-    it('should show installed plugins', () => {
-      // @ts-ignore
-      const plugins = window.__LogDNA__.showPlugins();
-      expect(plugins[0]).toMatch('ConsolePlugin');
-      expect(plugins[1]).toMatch('GlobalErrorHandlerPlugin');
-    });
-    it('should show the current context', () => {
-      // @ts-ignore
-      const config = window.__LogDNA__.showContext();
-      expect(config).toMatchObject({
-        user: 'Tom Hanks',
-      });
-    });
-    it('should show turn debugging on and off', () => {
-      // @ts-ignore
-      const config = window.__LogDNA__.showConfig();
-      expect(config.debug).toBeFalsy();
-      // @ts-ignore
-      window.__LogDNA__.setDebug(true);
-      // @ts-ignore
-      const config = window.__LogDNA__.showConfig();
-      expect(config.debug).toBeTruthy();
-      // @ts-ignore
-      window.__LogDNA__.setDebug(false);
-      // @ts-ignore
-      const config = window.__LogDNA__.showConfig();
-      expect(config.debug).toBeFalsy();
+      expect(() => utils.parseTags(['abc', 123])).toThrowError();
     });
   });
 
@@ -236,19 +176,6 @@ describe('Utils', () => {
       const val = utils.backOffWithJitter(base, cap, lastSleep);
       expect(val).toBeLessThanOrEqual(cap);
       expect(val).toBeGreaterThanOrEqual(base);
-    });
-  });
-
-  describe('Clear offline storage', () => {
-    it('should clear the offline storage', () => {
-      window.localStorage.setItem('logdna::browser::offline-cache', 'data');
-      expect(
-        window.localStorage.getItem('logdna::browser::offline-cache'),
-      ).toEqual('data');
-      utils.clearOfflineStorage();
-      expect(
-        window.localStorage.getItem('logdna::browser::offline-cache'),
-      ).toBeNull();
     });
   });
 });
