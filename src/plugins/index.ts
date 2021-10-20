@@ -1,5 +1,7 @@
-import PerformanceMeasurePlugin from './performance-measure';
+import Metrics from './metrics';
+import SSNFilter from './ssn-filter';
 
 export default {
-  PerformanceMeasurePlugin,
+  Metrics,
+  SSNFilter,
 };

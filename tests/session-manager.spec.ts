@@ -1,36 +1,30 @@
-import SessionManager from '../src/session-manager';
+import { init, getSessionId, setSessionId } from '../src/session-manager';
+import utils from '../src/utils';
 
-describe('Session manager', () => {
+const SESSION_STORAGE_VALUE = 'stored-session-key';
+
+describe('session-manager.ts', () => {
   beforeEach(() => {
-    jest.spyOn(window.sessionStorage.__proto__, 'setItem');
-    window.sessionStorage.__proto__.setItem = jest.fn();
-
-    jest.spyOn(window.sessionStorage.__proto__, 'getItem');
-    window.sessionStorage.__proto__.getItem = jest.fn();
+    jest.clearAllMocks();
+    window.sessionStorage.clear();
   });
 
-  it('should create a new session id and store it in session storage', () => {
-    new SessionManager();
-    expect(sessionStorage.getItem).toBeCalledTimes(1);
-    expect(sessionStorage.setItem).toBeCalledTimes(2);
+  it('should generate sessionId if there is no session storage', () => {
+    utils.isBrowserStorageAvailable = jest.fn(() => false);
+    expect(getSessionId()).toBeUndefined();
+    init();
+    expect(getSessionId()).toEqual(expect.any(String));
   });
 
-  it('should set custom sessionid return it when calling .get', () => {
-    const sessionManager = new SessionManager();
-
-    sessionManager.set('123');
-    // one in constructor, one in setter.
-    expect(sessionStorage.setItem).toBeCalledTimes(3);
-    expect(sessionManager.get()).toEqual('123');
+  it('should generate sessionId if there is no session storage', () => {
+    utils.isBrowserStorageAvailable = jest.fn(() => true);
+    init();
+    expect(getSessionId()).toEqual(expect.any(String));
   });
 
-  it('should create a new sessionid', () => {
-    const sessionManager = new SessionManager();
-
-    // @ts-ignore
-    sessionManager.create();
-    // one in constructor, one in setter.
-    expect(sessionStorage.setItem).toBeCalledTimes(3);
-    expect(sessionManager.get()).toBeDefined();
+  it('should set a custom session id', () => {
+    init();
+    setSessionId(SESSION_STORAGE_VALUE);
+    expect(getSessionId()).toEqual(SESSION_STORAGE_VALUE);
   });
 });

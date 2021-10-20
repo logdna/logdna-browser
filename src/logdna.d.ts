@@ -1,32 +1,29 @@
-import { Options as ConsoleOptions } from './plugins/console';
-import { Options as GlobalErrorHandlerOptions } from './plugins/global-handlers';
+import { GlobalErrorHandlerPlugin } from './plugins/global-handler';
+import { ConsolePlugin } from './plugins/console';
+declare module 'logdna-browser-2' {}
 
-export type ContextT = { [key: string]: string };
-export type LogDNABrowserOptionsT = {
-  hostname?: string;
-  url?: string;
-  app?: string;
-  env?: string;
-  flushInterval?: number;
-  enableStacktrace?: boolean;
-  enableIpAddress?: boolean;
-  sampleRate?: number;
-  tags?: string | string[];
-  plugins?: Plugin[];
-  console?: ConsoleOptions | boolean;
-  globalErrorHandlers?: GlobalErrorHandlerOptions | boolean;
-  debug?: boolean;
-  disabled?: boolean;
-};
+interface LogDNAMethods {}
 
-export type LoggerOptionsT = {
-  url?: string;
-  app?: string;
-  hostname: string;
-  flushInterval?: number;
-  tags: string;
-  log: Function;
-};
+// This is fallback to 3rd party plugin methods
+// Until TS has better Module Augmentation without
+// relative paths https://github.com/Microsoft/TypeScript/issues/18877
+declare module './LogDNAMethods' {
+  interface LogDNAMethods {
+    log(message: string, context?: Object, level?: LogLevel): void;
+    error(message: string, context?: Object, level?: LogLevel): void;
+    warn(message: string, context?: Object, level?: LogLevel): void;
+    info(message: string, context?: Object, level?: LogLevel): void;
+    debug(message: string, context?: Object, level?: LogLevel): void;
+  }
+}
+
+declare module './LogDNAMethods' {
+  interface LogDNAMethods {
+    mark(name: string): void;
+    measure(name: string, start: string, end: string): void;
+  }
+}
+
 export type LogDNALogLine = {
   line: string;
   timestamp?: number;
@@ -35,30 +32,61 @@ export type LogDNALogLine = {
   env?: string;
   app?: string;
 };
-export type StaticContext = {
-  browser?: object;
+
+interface ConsoleOptions {
+  enable?: boolean;
+  integrations?: LogLevel[];
+}
+
+export type LogDNABrowserOptions = {
+  hostname?: string;
+  url?: string;
+  app?: string;
+  env?: string;
+  flushInterval?: number;
+  enableStacktrace?: boolean;
+  sampleRate?: number;
+  tags?: Tags;
+  plugins?: Plugin[];
+  console?: ConsoleOptions | boolean;
+  globalErrorHandlers?: GlobalErrorHandlerPlugin | boolean;
+  debug?: boolean;
+  disabled?: boolean;
+  ingestionKey?: string;
+  hooks?: HooksOption;
+  internalErrorLogger?: Function;
 };
 
-export type LogType = 'log' | 'debug' | 'error' | 'warn' | 'info';
+export type LogMessage = {
+  level: LogLevel;
+  message: any;
+  lineContext?: Object;
+  errorContext?: Object;
+  disableStacktrace?: Boolean;
+};
 
-export interface Plugin {
-  readonly name: string;
-  init(logdna: any): void;
-}
+export type Context = {
+  [key: string]: any;
+};
 
-export interface ILogDNABrowserLogger {
-  init(
-    ingestionKey: string,
-    options?: LogDNABrowserOptionsT,
-  ): ILogDNABrowserLogger;
-  addContext(context: ContextT): ILogDNABrowserLogger;
-  setSessionId(sessionId: string): void;
-  clearContext(): void;
-  error(message: any, lineContext?: object): void;
-  log(message: any, lineContext?: object): void;
-  warn(message: any, lineContext?: object): void;
-  debug(message: any, lineContext?: object): void;
-  info(message: any, lineContext?: object): void;
-  captureError(error: ErrorEvent | Error, lineContext?: object): void;
-  registerMethod(name: string, fn: Function): void;
-}
+export type SessionId = string;
+
+export type Tags = string | string[];
+
+export type LogLevel = 'log' | 'debug' | 'error' | 'warn' | 'info' | string;
+
+export type Plugin = {
+  name: string;
+  init?: Function;
+  methods?: Function;
+  hooks?: Hooks;
+};
+
+type Hooks = {
+  beforeSend: BeforeSendHook;
+};
+type BeforeSendHook = Function;
+
+type HooksOption = {
+  beforeSend: BeforeSendHook[];
+};

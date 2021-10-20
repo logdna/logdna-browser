@@ -1,86 +1,104 @@
-import Console, { DEFAULT_CONSOLE_METHODS } from '../../src/plugins/console';
+import Console from '../../src/plugins/console';
+import * as capture from '../../src/capture';
 
-//@ts-ignore
-window.__LogDNA__ = {};
+const captureMessage = jest.spyOn(capture, 'captureMessage');
+console.log = jest.fn();
+console.debug = jest.fn();
+console.error = jest.fn();
+console.warn = jest.fn();
+console.info = jest.fn();
 
-describe('Console Plugin', () => {
-  let logdna: any;
+describe('logger.ts', () => {
+  beforeEach(() => jest.clearAllMocks());
 
-  describe('when passed incorrect params', () => {
-    const console = new Console({
-      //@ts-ignore
-      integrations: 'wrong',
+  it('should have a name property', () => {
+    const consolePlugin = Console();
+    expect(consolePlugin.name).toEqual('ConsolePlugin');
+  });
+
+  it('should throw an error if integration options is not an array', () => {
+    //@ts-ignore
+    const consolePlugin = Console({ integrations: 123 });
+    //@ts-ignore
+    expect(() => consolePlugin.init()).toThrowError();
+  });
+
+  it('should throw an error if integration contains an invalid log type', () => {
+    //@ts-ignore
+    const consolePlugin = Console({ integrations: ['wtf'] });
+    //@ts-ignore
+    expect(() => consolePlugin.init()).toThrowError();
+  });
+
+  describe('calling console methods', () => {
+    const consolePlugin = Console();
+    //@ts-ignore
+    consolePlugin.init();
+    it(`should call capture message`, () => {
+      console.log('Testing');
+      expect(captureMessage).toHaveBeenLastCalledWith({
+        level: 'log',
+        message: 'Testing',
+      });
     });
-    it('show throw error when integrations options is not an array', () => {
-      // @ts-ignore
-      expect(() => console.init()).toThrow();
+
+    it(`should call capture message`, () => {
+      console.error('Testing');
+      expect(captureMessage).toHaveBeenLastCalledWith({
+        level: 'error',
+        message: 'Testing',
+      });
+    });
+
+    it(`should call capture message`, () => {
+      console.warn('Testing');
+      expect(captureMessage).toHaveBeenLastCalledWith({
+        level: 'warn',
+        message: 'Testing',
+      });
+    });
+
+    it(`should call capture message`, () => {
+      console.debug('Testing');
+      expect(captureMessage).toHaveBeenLastCalledWith({
+        level: 'debug',
+        message: 'Testing',
+      });
+    });
+
+    it(`should call capture message`, () => {
+      console.info('Testing');
+      expect(captureMessage).toHaveBeenLastCalledWith({
+        level: 'info',
+        message: 'Testing',
+      });
     });
   });
 
-  describe('', () => {
-    it('should not call log lines when passed an invalid console method', () => {
-      logdna = {
-        logLines: jest.fn(),
-      };
-      const console = new Console({
-        //@ts-ignore
-        integrations: ['wah'],
-      });
-      // @ts-ignore
-      expect(() => console.init()).toThrow();
-    });
-  });
-
-  describe('when initialized', () => {
-    beforeEach(() => {
-      logdna = {
-        logLines: jest.fn(),
-      };
-      //@ts-ignore
-      window.console = DEFAULT_CONSOLE_METHODS.reduce((acc: any, method) => {
-        acc[method] = jest.fn();
-        return acc;
-      }, {});
+  describe('when the last object is contains `{ isLogDNAMessage: true }`', () => {
+    it(`should NOT call capture message`, () => {
+      console.log('Testing', { isLogDNAMessage: true });
+      expect(captureMessage).toHaveBeenCalledTimes(0);
     });
 
-    DEFAULT_CONSOLE_METHODS.forEach((method: string) => {
-      it('should override the default console methods', () => {
-        const console = new Console();
-        console.init(logdna);
-        // @ts-ignore
-        window.console[method]('test message');
-        expect(logdna.logLines).toHaveBeenCalledWith(method, 'test message');
-      });
+    it(`should NOT call capture message`, () => {
+      console.error('Testing', { isLogDNAMessage: true });
+      expect(captureMessage).toHaveBeenCalledTimes(0);
     });
 
-    describe('when overriding only log and error methods', () => {
-      const integrations: any = ['log', 'error'];
-      const notIntegrations: any = ['debug', 'warn', 'info', 'assert'];
-      it('should call log lines', () => {
-        const console = new Console({
-          integrations,
-        });
-        console.init(logdna);
+    it(`should NOT call capture message`, () => {
+      console.warn('Testing', { isLogDNAMessage: true });
+      expect(captureMessage).toHaveBeenCalledTimes(0);
+    });
 
-        integrations.forEach((method: string) => {
-          // @ts-ignore
-          window.console[method]('test message');
-          expect(logdna.logLines).toHaveBeenCalledWith(method, 'test message');
-        });
-      });
+    it(`should NOT call capture message`, () => {
+      console.debug('Testing', { isLogDNAMessage: true });
+      expect(captureMessage).toHaveBeenCalledTimes(0);
+    });
 
-      it('should not call log lines', () => {
-        const console = new Console({
-          integrations,
-        });
-        console.init(logdna);
-
-        notIntegrations.forEach((method: string) => {
-          // @ts-ignore
-          window.console[method]('test message');
-          expect(logdna.logLines).toHaveBeenCalledTimes(0);
-        });
-      });
+    it(`should NOT call capture message`, () => {
+      console.info('Testing', { isLogDNAMessage: true });
+      expect(captureMessage).toHaveBeenCalledTimes(0);
     });
   });
 });

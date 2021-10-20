@@ -1,65 +1,61 @@
-import { Plugin, ILogDNABrowserLogger } from '../logdna.d';
+import { captureMessage } from '../capture';
+import utils from '../utils';
 
-type LogType = 'log' | 'debug' | 'error' | 'warn' | 'info' | 'assert';
+import { Plugin, LogLevel } from '../logdna';
 
-export type Options = {
-  integrations?: LogType[];
-  enable?: boolean;
+export type ConsolePlugin =
+  | {
+      integrations?: LogLevel[];
+    }
+  | undefined;
+
+const DEFAULT_CONSOLE_METHODS: LogLevel[] = ['log', 'debug', 'error', 'warn', 'info'];
+
+const DEFAULT_OPTIONS = {
+  integrations: DEFAULT_CONSOLE_METHODS,
 };
 
-export const DEFAULT_CONSOLE_METHODS: LogType[] = [
-  'log',
-  'debug',
-  'error',
-  'warn',
-  'info',
-  'assert',
-];
-
-class ConsolePlugin implements Plugin {
-  name = 'ConsolePlugin';
-  options;
-
-  constructor(
-    options: Options = {
-      integrations: DEFAULT_CONSOLE_METHODS,
-    },
-  ) {
-    this.options = options;
-  }
-
-  init(logdna: ILogDNABrowserLogger) {
-    const { integrations = DEFAULT_CONSOLE_METHODS } = this.options;
+const Console = (opts: ConsolePlugin = DEFAULT_OPTIONS): Plugin => ({
+  name: 'ConsolePlugin',
+  init() {
+    const { integrations } = opts;
 
     if (!Array.isArray(integrations)) {
-      throw new Error(
-        'LogDNA Browser Logger console integration types must be an array',
-      );
+      throw new Error('LogDNA Browser Logger console integration types must be an array');
     }
 
-    const { log, debug, error, warn, info, assert } = window.console;
-    const _windowConsole = { log, debug, error, warn, info, assert };
-
-    //@ts-ignore
-    window.__LogDNA__.console = _windowConsole;
+    const { log, debug, error, warn, info } = window.console;
+    const _windowConsole = { log, debug, error, warn, info };
 
     (integrations || [])
-      .map((method: LogType): LogType => method.toLowerCase() as LogType)
-      .forEach((method: LogType) => {
+      .map(method => method.toLowerCase())
+      .forEach(method => {
         if (!DEFAULT_CONSOLE_METHODS.includes(method)) {
-          throw Error(
-            'LogDNA Browser Logger console plugin was passed an invalid console methods',
-          );
+          throw Error('LogDNA Browser Logger console plugin was passed an invalid console methods');
         }
 
-        window.console[method] = (...args: any[]) => {
-          //@ts-ignore
-          logdna.logLines(method, args.length > 1 ? args : args[0]);
+        // @ts-ignore
+        window.console[method] = (...args) => {
+          const lastArg = args.length && args[args.length - 1];
+          const isLogDNAMessage = typeof lastArg === 'object' && 'isLogDNAMessage' in lastArg && lastArg.isLogDNAMessage;
+
+          if (isLogDNAMessage) {
+            args.splice(-1);
+          }
+
+          if (!isLogDNAMessage) {
+            captureMessage({
+              level: method as LogLevel,
+              message: args.length > 1 ? utils.stringify(args) : args[0],
+            });
+          }
+
+          // @ts-ignore
           _windowConsole[method](...args);
           return;
         };
       });
-  }
-}
+  },
+});
 
-export default ConsolePlugin;
+export default Console;
