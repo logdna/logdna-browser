@@ -1,5 +1,19 @@
 ## Changelog
 
+# [2.0.0](https://github.com/logdna/logdna-browser/compare/v1.1.4...v2.0.0) (2022-03-08)
+
+
+### Features
+
+* **ssr**: Updates to allow SSR (nextjs) support [7c69b91](https://github.com/logdna/logdna-browser/commit/7c69b9190da405cb79e3f944fdcacddf00a005f8) - Terry Moore
+
+
+### **BREAKING CHANGES**
+
+* **ssr:** This is a large rewrite to abstract any call to window
+until after init has run.  This allows for SSR support and better
+initialization.
+
 ## [1.1.4](https://github.com/logdna/logdna-browser/compare/v1.1.3...v1.1.4) (2021-08-25)
 
 ### Bug Fixes
