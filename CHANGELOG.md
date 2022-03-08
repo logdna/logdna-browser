@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.1](https://github.com/logdna/logdna-browser/compare/v2.0.0...v2.0.1) (2022-03-08)
+
+
+### Bug Fixes
+
+* **error-check**: Check that error exist [b8f5582](https://github.com/logdna/logdna-browser/commit/b8f55821050d2871a8c042138266bed57e8bd3a3) - Terry Moore
+
 # [2.0.0](https://github.com/logdna/logdna-browser/compare/v1.1.4...v2.0.0) (2022-03-08)
 
 
