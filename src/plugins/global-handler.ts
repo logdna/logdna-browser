@@ -42,7 +42,8 @@ const onUnhandledRejection = (e: any) => {
 
 /*  istanbul ignore next */
 const onError = (error: ErrorEvent) => {
-  captureError(error.error);
+  const e = error?.error ?? error ?? {};
+  captureError(e);
 };
 
 const GlobalErrorHandler = (opts: GlobalErrorHandlerPlugin = DEFAULT_OPTIONS): Plugin => ({
