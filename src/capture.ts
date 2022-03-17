@@ -15,7 +15,7 @@ const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage
   }
 
   // run the beforeSend hooks
-  const data: LogMessage = (getOptions().hooks || { beforeSend: [] }).beforeSend.reduce((acc, fn) => (acc == null ? null : fn(acc)), {
+  const data: LogMessage = (getOptions().hooks || { beforeSend: [] }).beforeSend.reduce((acc: LogMessage, fn: Function) => (acc == null ? null : fn(acc)), {
     level,
     message,
     lineContext,

@@ -85,7 +85,8 @@ export type Plugin = {
 type Hooks = {
   beforeSend: BeforeSendHook;
 };
-type BeforeSendHook = Function;
+
+type BeforeSendHook = (logMessage: LogMessage) => LogMessage;
 
 type HooksOption = {
   beforeSend: BeforeSendHook[];
