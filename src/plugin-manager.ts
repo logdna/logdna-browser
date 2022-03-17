@@ -50,6 +50,10 @@ export const initPlugins = (options: LogDNABrowserOptions) => {
     if (p.hooks && options.hooks) {
       if (utils.isFunction(p.hooks.beforeSend)) {
         options.hooks.beforeSend.push(p.hooks.beforeSend);
+
+        if (!installedPlugins.includes(p.name)) {
+          installedPlugins.push(p.name);
+        }
       }
     }
   });

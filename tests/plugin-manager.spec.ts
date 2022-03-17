@@ -2,7 +2,7 @@ import { addDefaultPlugins, addPluginMethods, initPlugins, getInstalledPlugins }
 
 import { DEFAULT_CONFIG } from '../src/constants';
 import { LogDNAMethods } from '../src/LogDNAMethods';
-import { LogDNABrowserOptions, Plugin } from '../src/logdna';
+import { LogDNABrowserOptions, Plugin, LogMessage } from '../src/logdna';
 
 declare module '../src/LogDNAMethods' {
   interface LogDNAMethods {
@@ -22,7 +22,12 @@ const TestPlugin = (): Plugin => ({
   },
   init,
   hooks: {
-    beforeSend: () => {},
+    beforeSend({ level = 'log', message = 'Test' }: LogMessage): LogMessage {
+      return {
+        level,
+        message,
+      };
+    },
   },
 });
 

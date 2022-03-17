@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.2](https://github.com/logdna/logdna-browser/compare/v2.0.1...v2.0.2) (2022-03-17)
+
+
+### Bug Fixes
+
+* **types**: Add types to BeforeSendHook [fc32444](https://github.com/logdna/logdna-browser/commit/fc32444a1157295964619b7e6e754aade5fae27b) - Terry Moore, closes: [#29](https://github.com/logdna/logdna-browser/issues/29)
+
 ## [2.0.1](https://github.com/logdna/logdna-browser/compare/v2.0.0...v2.0.1) (2022-03-08)
 
 
