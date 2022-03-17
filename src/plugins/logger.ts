@@ -1,5 +1,7 @@
 import { captureMessage } from '../capture';
 import { LogLevel } from '../logdna';
+import utils from '../utils';
+import { getOptions } from '../init';
 
 declare module '../LogDNAMethods' {
   interface LogDNAMethods {
@@ -16,6 +18,10 @@ const log = (message: string, context?: Object, level: LogLevel = 'log') => {
     message,
     lineContext: context,
   });
+
+  if (getOptions().debug) {
+    utils.originalConsole[level](...[message, context].filter(i => i !== undefined));
+  }
 };
 
 const error = (message: string, context?: Object) => {

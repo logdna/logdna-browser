@@ -36,19 +36,10 @@ const Console = (opts: ConsolePlugin = DEFAULT_OPTIONS): Plugin => ({
 
         // @ts-ignore
         window.console[method] = (...args) => {
-          const lastArg = args.length && args[args.length - 1];
-          const isLogDNAMessage = typeof lastArg === 'object' && 'isLogDNAMessage' in lastArg && lastArg.isLogDNAMessage;
-
-          if (isLogDNAMessage) {
-            args.splice(-1);
-          }
-
-          if (!isLogDNAMessage) {
-            captureMessage({
-              level: method as LogLevel,
-              message: args.length > 1 ? utils.stringify(args) : args[0],
-            });
-          }
+          captureMessage({
+            level: method as LogLevel,
+            message: args.length > 1 ? utils.stringify(args) : args[0],
+          });
 
           // @ts-ignore
           _windowConsole[method](...args);

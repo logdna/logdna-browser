@@ -5,7 +5,7 @@ const captureError = jest.spyOn(capture, 'captureError');
 
 const globalErrorHandler = GlobalErrorHandler();
 
-describe('logger.ts', () => {
+describe('global-handler.ts', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should have a name property', () => {

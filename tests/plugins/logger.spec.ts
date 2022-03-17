@@ -1,4 +1,6 @@
 import Logger from '../../src/plugins/logger';
+import utils from '../../src/utils';
+import * as init from '../../src/init';
 import * as capture from '../../src/capture';
 
 const captureMessage = jest.spyOn(capture, 'captureMessage');
@@ -86,5 +88,58 @@ describe('logger.ts', () => {
       message: 'Message',
       lineContext: { abc: 123 },
     });
+  });
+
+  it('should call captureMessage once and send data to the browser console when debug is enabled', () => {
+    jest.spyOn(init, 'getOptions').mockImplementationOnce(() => ({
+      console: false,
+      debug: true,
+    }));
+    utils.originalConsole.log = jest.fn();
+
+    const methods = logger.methods();
+    methods.log('Message', { abc: 123 });
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+    expect(captureMessage).toHaveBeenCalledWith({
+      level: 'log',
+      message: 'Message',
+      lineContext: { abc: 123 },
+    });
+    expect(utils.originalConsole.log).toHaveBeenLastCalledWith('Message', { abc: 123 });
+  });
+
+  it('should call captureMessage once and send data to the browser console when debug is enabled and filter line context when undefined', () => {
+    jest.spyOn(init, 'getOptions').mockImplementationOnce(() => ({
+      console: false,
+      debug: true,
+    }));
+    utils.originalConsole.log = jest.fn();
+
+    const methods = logger.methods();
+    methods.log('Message');
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+    expect(captureMessage).toHaveBeenCalledWith({
+      level: 'log',
+      message: 'Message',
+    });
+    expect(utils.originalConsole.log).toHaveBeenLastCalledWith('Message');
+  });
+
+  it('should call captureMessage once and not send data to the browser console when debug is false', () => {
+    jest.spyOn(init, 'getOptions').mockImplementationOnce(() => ({
+      console: false,
+      debug: false,
+    }));
+    utils.originalConsole.log = jest.fn();
+
+    const methods = logger.methods();
+    methods.log('Message', { abc: 123 });
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+    expect(captureMessage).toHaveBeenCalledWith({
+      level: 'log',
+      message: 'Message',
+      lineContext: { abc: 123 },
+    });
+    expect(utils.originalConsole.log).toHaveBeenCalledTimes(0);
   });
 });

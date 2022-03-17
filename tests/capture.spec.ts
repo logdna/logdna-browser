@@ -2,6 +2,7 @@ import { captureMessage, captureError, internalErrorLogger } from '../src/captur
 import * as bufferManager from '../src/buffer-manager';
 import * as init from '../src/init';
 import { DEFAULT_CONFIG } from '../src/constants';
+import utils from '../src/utils';
 
 const process = jest.spyOn(bufferManager, 'process').mockImplementationOnce(async () => {});
 
@@ -107,17 +108,23 @@ describe('capture.ts', () => {
       });
     });
   });
+
   describe('internalErrorLogger', () => {
     console.error = jest.fn();
+    utils.originalConsole.error = jest.fn();
 
     it('should log out to console error when default logger', () => {
       internalErrorLogger('My Internal Message');
-      expect(console.error).toHaveBeenCalledWith('My Internal Message', { isLogDNAMessage: true });
+      expect(utils.originalConsole.error).toHaveBeenCalledWith('My Internal Message');
+      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(process).toHaveBeenCalledTimes(0);
     });
 
     it('should log out to console error all arguments when default logger', () => {
       internalErrorLogger('My Internal Message', 'Another', 'And Another');
-      expect(console.error).toHaveBeenCalledWith('My Internal Message', 'Another', 'And Another', { isLogDNAMessage: true });
+      expect(utils.originalConsole.error).toHaveBeenCalledWith('My Internal Message', 'Another', 'And Another');
+      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(process).toHaveBeenCalledTimes(0);
     });
 
     it('should call custom logger when defined', () => {
