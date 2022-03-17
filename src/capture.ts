@@ -74,7 +74,7 @@ const internalErrorLogger = (...args: any[]) => {
     getOptions().internalErrorLogger(...args);
     return;
   }
-  return console.error(...args, { isLogDNAMessage: true });
+  return utils.originalConsole.error(...args);
 };
 
 export { captureError, captureMessage, internalErrorLogger };

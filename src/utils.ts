@@ -93,6 +93,9 @@ const isBrowserStorageAvailable = (storage: 'localStorage' | 'sessionStorage') =
 
 const isFunction = (fn?: Function) => typeof fn === 'function';
 
+const { log, debug, error, warn, info } = window.console;
+const originalConsole: any = { log, debug, error, warn, info };
+
 export default {
   validateHostname,
   parseTags,
@@ -104,4 +107,5 @@ export default {
   generateSampleRateScore,
   isBrowserStorageAvailable,
   isFunction,
+  originalConsole,
 };

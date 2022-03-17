@@ -8,7 +8,7 @@ console.error = jest.fn();
 console.warn = jest.fn();
 console.info = jest.fn();
 
-describe('logger.ts', () => {
+describe('console.ts', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should have a name property', () => {
@@ -72,33 +72,6 @@ describe('logger.ts', () => {
         level: 'info',
         message: 'Testing',
       });
-    });
-  });
-
-  describe('when the last object is contains `{ isLogDNAMessage: true }`', () => {
-    it(`should NOT call capture message`, () => {
-      console.log('Testing', { isLogDNAMessage: true });
-      expect(captureMessage).toHaveBeenCalledTimes(0);
-    });
-
-    it(`should NOT call capture message`, () => {
-      console.error('Testing', { isLogDNAMessage: true });
-      expect(captureMessage).toHaveBeenCalledTimes(0);
-    });
-
-    it(`should NOT call capture message`, () => {
-      console.warn('Testing', { isLogDNAMessage: true });
-      expect(captureMessage).toHaveBeenCalledTimes(0);
-    });
-
-    it(`should NOT call capture message`, () => {
-      console.debug('Testing', { isLogDNAMessage: true });
-      expect(captureMessage).toHaveBeenCalledTimes(0);
-    });
-
-    it(`should NOT call capture message`, () => {
-      console.info('Testing', { isLogDNAMessage: true });
-      expect(captureMessage).toHaveBeenCalledTimes(0);
     });
   });
 });
