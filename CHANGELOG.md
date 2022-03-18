@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.3](https://github.com/logdna/logdna-browser/compare/v2.0.2...v2.0.3) (2022-03-18)
+
+
+### Bug Fixes
+
+* **debug**: Readd debug functionality [24bff12](https://github.com/logdna/logdna-browser/commit/24bff121345f7bab908ddd2a4efd052a07156a6f) - Terry Moore, closes: [#28](https://github.com/logdna/logdna-browser/issues/28)
+
 ## [2.0.2](https://github.com/logdna/logdna-browser/compare/v2.0.1...v2.0.2) (2022-03-17)
 
 
