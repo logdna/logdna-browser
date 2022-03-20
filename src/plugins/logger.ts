@@ -1,18 +1,19 @@
 import { captureMessage } from '../capture';
-import { LogLevel } from '../logdna';
+import { LogLevel, LineContext } from '../logdna';
 import utils from '../utils';
 import { getOptions } from '../init';
 
 declare module '../LogDNAMethods' {
   interface LogDNAMethods {
-    log(message: string, context?: Object, level?: LogLevel): void;
-    error(message: string, context?: Object, level?: LogLevel): void;
-    warn(message: string, context?: Object, level?: LogLevel): void;
-    info(message: string, context?: Object, level?: LogLevel): void;
+    log(message: any, context?: LineContext, level?: LogLevel): void;
+    error(message: any, context?: LineContext, level?: LogLevel): void;
+    warn(message: any, context?: LineContext, level?: LogLevel): void;
+    debug(message: any, context?: LineContext, level?: LogLevel): void;
+    info(message: any, context?: LineContext, level?: LogLevel): void;
   }
 }
 
-const log = (message: string, context?: Object, level: LogLevel = 'log') => {
+const log = (message: any, context?: LineContext, level: LogLevel = 'log') => {
   captureMessage({
     level,
     message,
@@ -24,19 +25,19 @@ const log = (message: string, context?: Object, level: LogLevel = 'log') => {
   }
 };
 
-const error = (message: string, context?: Object) => {
+const error = (message: any, context?: LineContext) => {
   log(message, context, 'error');
 };
 
-const warn = (message: string, context?: Object) => {
+const warn = (message: any, context?: LineContext) => {
   log(message, context, 'warn');
 };
 
-const debug = (message: string, context?: Object) => {
+const debug = (message: any, context?: LineContext) => {
   log(message, context, 'debug');
 };
 
-const info = (message: string, context?: Object) => {
+const info = (message: any, context?: LineContext) => {
   log(message, context, 'info');
 };
 

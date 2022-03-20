@@ -30,7 +30,7 @@ const Console = (opts: ConsolePlugin = DEFAULT_OPTIONS): Plugin => ({
     (integrations || [])
       .map(method => method.toLowerCase())
       .forEach(method => {
-        if (!DEFAULT_CONSOLE_METHODS.includes(method)) {
+        if (!DEFAULT_CONSOLE_METHODS.includes(method as LogLevel)) {
           throw Error('LogDNA Browser Logger console plugin was passed an invalid console methods');
         }
 

@@ -35,6 +35,17 @@ describe('logger.ts', () => {
     });
   });
 
+  it('should call captureMessage with the correct log level and data when message is an object', () => {
+    const methods = logger.methods();
+    methods.log({ test: 'Message' }, { abc: 123 }, 'log');
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+    expect(captureMessage).toHaveBeenCalledWith({
+      level: 'log',
+      message: { test: 'Message' },
+      lineContext: { abc: 123 },
+    });
+  });
+
   it('should call captureMessage with the correct log level and data', () => {
     const methods = logger.methods();
     methods.log('Message', { abc: 123 });
