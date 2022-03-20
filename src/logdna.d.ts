@@ -1,5 +1,4 @@
 import { GlobalErrorHandlerPlugin } from './plugins/global-handler';
-import { ConsolePlugin } from './plugins/console';
 declare module 'logdna-browser-2' {}
 
 interface LogDNAMethods {}
@@ -9,11 +8,11 @@ interface LogDNAMethods {}
 // relative paths https://github.com/Microsoft/TypeScript/issues/18877
 declare module './LogDNAMethods' {
   interface LogDNAMethods {
-    log(message: string, context?: Object, level?: LogLevel): void;
-    error(message: string, context?: Object, level?: LogLevel): void;
-    warn(message: string, context?: Object, level?: LogLevel): void;
-    info(message: string, context?: Object, level?: LogLevel): void;
-    debug(message: string, context?: Object, level?: LogLevel): void;
+    log(message: any, context?: LineContext, level?: LogLevel): void;
+    error(message: any, context?: LineContext, level?: LogLevel): void;
+    warn(message: any, context?: LineContext, level?: LogLevel): void;
+    info(message: any, context?: LineContext, level?: LogLevel): void;
+    debug(message: any, context?: LineContext, level?: LogLevel): void;
   }
 }
 
@@ -57,12 +56,21 @@ export type LogDNABrowserOptions = {
   internalErrorLogger?: Function;
 };
 
+export type LineContext = object;
+
+export type ErrorContext = {
+  colno?: number;
+  lineno?: number;
+  stacktrace?: string;
+  source?: string;
+};
+
 export type LogMessage = {
   level: LogLevel;
   message: any;
-  lineContext?: Object;
-  errorContext?: Object;
-  disableStacktrace?: Boolean;
+  lineContext?: LineContext;
+  errorContext?: ErrorContext;
+  disableStacktrace?: boolean;
 };
 
 export type Context = {
@@ -73,7 +81,7 @@ export type SessionId = string;
 
 export type Tags = string | string[];
 
-export type LogLevel = 'log' | 'debug' | 'error' | 'warn' | 'info' | string;
+export type LogLevel = 'log' | 'debug' | 'error' | 'warn' | 'info';
 
 export type Plugin = {
   name: string;

@@ -1,8 +1,9 @@
+import { LogLevel } from '../../src/logdna';
 import SSN from '../../src/plugins/ssn-filter';
 
 const ssnFilter = SSN();
 const generateLogMessage = (message: any) => ({
-  level: 'log',
+  level: 'log' as LogLevel,
   message,
 });
 
