@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.4](https://github.com/logdna/logdna-browser/compare/v2.0.3...v2.0.4) (2022-03-21)
+
+
+### Bug Fixes
+
+* **types**: Change type to lowercase boolean [a957f44](https://github.com/logdna/logdna-browser/commit/a957f4490b796a53698c67006922d213e22e2887) - Terry Moore, closes: [#33](https://github.com/logdna/logdna-browser/issues/33)
+
 ## [2.0.3](https://github.com/logdna/logdna-browser/compare/v2.0.2...v2.0.3) (2022-03-18)
 
 
