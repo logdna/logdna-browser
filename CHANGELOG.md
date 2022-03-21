@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.5](https://github.com/logdna/logdna-browser/compare/v2.0.4...v2.0.5) (2022-03-21)
+
+
+### Bug Fixes
+
+* **hooks**: Run hooks with captureError [295cd2b](https://github.com/logdna/logdna-browser/commit/295cd2bca88f50fc38f8b6ad3e7b47e46bfeb3c0) - Terry Moore
+
 ## [2.0.4](https://github.com/logdna/logdna-browser/compare/v2.0.3...v2.0.4) (2022-03-21)
 
 
