@@ -1,7 +1,7 @@
 import { GlobalErrorHandlerPlugin } from './plugins/global-handler';
-declare module 'logdna-browser-2' {}
+declare module 'logdna-browser-2' { }
 
-interface LogDNAMethods {}
+interface LogDNAMethods { }
 
 // This is fallback to 3rd party plugin methods
 // Until TS has better Module Augmentation without
@@ -69,7 +69,7 @@ export type LogMessage = {
   level: LogLevel;
   message: any;
   lineContext?: LineContext;
-  errorContext?: ErrorContext;
+  errorContext?: ErrorContext | null | undefined;
   disableStacktrace?: boolean;
 };
 

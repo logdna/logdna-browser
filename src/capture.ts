@@ -14,6 +14,28 @@ const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage
     return;
   }
 
+  generateLogLine({ level, message, lineContext });
+};
+
+const captureError = (error: any) => {
+  if (isSendingDisabled()) return;
+
+  generateLogLine({
+    level: 'error',
+    message: error.message,
+    errorContext: {
+      colno: error.columnNumber || error.colno || error.colNo,
+      lineno: error.lineNumber || error.lineno || error.lineNo,
+      stacktrace: error.stack || error.stacktrace,
+      source: error.fileName || error.source,
+    },
+    disableStacktrace: !!(error.stack || error.stacktrace), // Dont generate a second stacktrace for errors since they already have it
+  });
+};
+
+const generateLogLine = ({ level = 'log', message, lineContext = {}, errorContext = null, disableStacktrace = false }: LogMessage) => {
+  const opts = getOptions();
+
   // run the beforeSend hooks
   const data: LogMessage = (getOptions().hooks || { beforeSend: [] }).beforeSend.reduce((acc: LogMessage, fn: Function) => (acc == null ? null : fn(acc)), {
     level,
@@ -26,46 +48,21 @@ const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage
     return;
   }
 
-  const logLine: LogDNALogLine = generateLogLine(data);
-
-  process(logLine);
-};
-
-const captureError = (error: any) => {
-  if (isSendingDisabled()) return;
-
-  const logLine: LogDNALogLine = generateLogLine({
-    level: 'error',
-    message: error.message,
-    errorContext: {
-      colno: error.columnNumber || error.colno || error.colNo,
-      lineno: error.lineNumber || error.lineno || error.lineNo,
-      stacktrace: error.stack || error.stacktrace,
-      source: error.fileName || error.source,
-    },
-    disableStacktrace: !!(error.stack || error.stacktrace), // Dont generate a second stacktrace for errors since they already have it
-  });
-
-  process(logLine);
-};
-
-const generateLogLine = ({ level = 'log', message, lineContext = {}, errorContext = {}, disableStacktrace = false }: LogMessage): LogDNALogLine => {
-  const opts = getOptions();
-  return {
+  process({
     timestamp: Math.floor(Date.now() / 1000),
     app: opts.app || window.location.host,
-    line: typeof message === 'string' ? message : utils.stringify(message),
-    level,
+    line: typeof data.message === 'string' ? data.message : utils.stringify(data.message),
+    level: data.level,
     meta: {
       sessionId: getSessionId(),
       ...getStaticContext(),
       ...getDynamicContext(),
       stacktrace: disableStacktrace || !opts.enableStacktrace ? undefined : utils.getStackTrace(),
       context: { ...getContext() },
-      lineContext,
+      lineContext: data.lineContext,
       errorContext,
     },
-  };
+  });
 };
 
 const internalErrorLogger = (...args: any[]) => {
