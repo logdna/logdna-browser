@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.6](https://github.com/logdna/logdna-browser/compare/v2.0.5...v2.0.6) (2022-04-06)
+
+
+### Bug Fixes
+
+* **exceptionhandler**: Better logging of unhandledPromiseRejections [986b902](https://github.com/logdna/logdna-browser/commit/986b902a49b386a166e5cef06a01609df7fb5461) - Terry Moore
+
 ## [2.0.5](https://github.com/logdna/logdna-browser/compare/v2.0.4...v2.0.5) (2022-03-21)
 
 
