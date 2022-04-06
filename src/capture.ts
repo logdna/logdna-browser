@@ -20,9 +20,11 @@ const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage
 const captureError = (error: any) => {
   if (isSendingDisabled()) return;
 
+  const message = error.name ? `${error.name}: ${error.message}` : error.message;
+
   generateLogLine({
     level: 'error',
-    message: error.message,
+    message,
     errorContext: {
       colno: error.columnNumber || error.colno || error.colNo,
       lineno: error.lineNumber || error.lineno || error.lineNo,
