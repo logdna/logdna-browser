@@ -57,7 +57,7 @@ describe('capture.ts', () => {
       expect(process).toHaveBeenCalledWith({
         timestamp: expect.any(Number),
         app: expect.any(String),
-        line: 'Error Message',
+        line: 'Error: Error Message',
         level: 'error',
         meta: expect.any(Object),
       });
@@ -95,7 +95,23 @@ describe('capture.ts', () => {
     it('should generate an error context when message is an error', () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
 
-      const error = new Error('Error Message');
+      const error = new TypeError('Error Message');
+      captureError(error);
+
+      expect(process).toHaveBeenCalledTimes(1);
+      expect(process).toHaveBeenCalledWith({
+        timestamp: expect.any(Number),
+        app: expect.any(String),
+        line: 'TypeError: Error Message',
+        level: 'error',
+        meta: expect.any(Object),
+      });
+    });
+
+    it('should generate an error context and not add the type when it not provided', () => {
+      jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
+
+      const error = { message: 'Error Message' };
       captureError(error);
 
       expect(process).toHaveBeenCalledTimes(1);
