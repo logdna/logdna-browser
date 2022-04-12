@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.7](https://github.com/logdna/logdna-browser/compare/v2.0.6...v2.0.7) (2022-04-12)
+
+
+### Bug Fixes
+
+* **error**: Prefix the error type to the log message [7880a82](https://github.com/logdna/logdna-browser/commit/7880a82f6949fbd94d651c899fe953b5c3b502a8) - Terry Moore
+
 ## [2.0.6](https://github.com/logdna/logdna-browser/compare/v2.0.5...v2.0.6) (2022-04-06)
 
 
