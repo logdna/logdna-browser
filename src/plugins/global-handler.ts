@@ -25,7 +25,7 @@ const addUnhandledrejection = () => {
 
 /*  istanbul ignore next */
 const onUnhandledRejection = (e: any) => {
-  let error = e;
+  let error: any = {};
   let reason;
 
   if ('reason' in e) {
@@ -38,6 +38,10 @@ const onUnhandledRejection = (e: any) => {
     error = reason;
   } else if (typeof reason === 'string') {
     error.message = reason;
+  } else if (e instanceof Error) {
+    error = e;
+  } else if (typeof e === 'string') {
+    error.message = e;
   } else {
     error.message = '<unknown>';
   }
