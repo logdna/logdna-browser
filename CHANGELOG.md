@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.8](https://github.com/logdna/logdna-browser/compare/v2.0.7...v2.0.8) (2022-05-02)
+
+
+### Bug Fixes
+
+* **unhandledPromise**: `error.message` is overwritten [72fc396](https://github.com/logdna/logdna-browser/commit/72fc396ce0dd427eee05742a965289e74479b746) - Terry Moore, closes: [#38](https://github.com/logdna/logdna-browser/issues/38)
+
 ## [2.0.7](https://github.com/logdna/logdna-browser/compare/v2.0.6...v2.0.7) (2022-04-12)
 
 
