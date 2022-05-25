@@ -17,10 +17,14 @@ const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage
   generateLogLine({ level, message, lineContext });
 };
 
-const captureError = (error: any) => {
+const captureError = (error: any, isUnhandledRejection = false) => {
   if (isSendingDisabled()) return;
 
-  const message = error.name ? `${error.name}: ${error.message}` : error.message;
+  let message = error.name ? `${error.name}: ${error.message}` : error.message;
+
+  if (isUnhandledRejection) {
+    message = `Uncaught (in promise) ${message}`;
+  }
 
   generateLogLine({
     level: 'error',

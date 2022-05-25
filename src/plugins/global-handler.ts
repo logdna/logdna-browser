@@ -25,30 +25,8 @@ const addUnhandledrejection = () => {
 
 /*  istanbul ignore next */
 const onUnhandledRejection = (e: any) => {
-  let error: any = {};
-  let reason;
-
-  if ('reason' in e) {
-    reason = e.reason;
-  } else if (e && e.detail && e.detail.reason) {
-    reason = e.detail.reason;
-  }
-
-  if (reason instanceof Error) {
-    error = reason;
-  } else if (typeof reason === 'string') {
-    error.message = reason;
-  } else if (e instanceof Error) {
-    error = e;
-  } else if (typeof e === 'string') {
-    error.message = e;
-  } else {
-    error.message = '<unknown>';
-  }
-
-  error.message = `Uncaught (in promise) ${error.message}`;
-
-  captureError(error);
+  let error: any = e.reason;
+  captureError(error, true);
 };
 
 /*  istanbul ignore next */
