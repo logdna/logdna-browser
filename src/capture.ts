@@ -35,7 +35,7 @@ const captureError = (error: any, isUnhandledRejection = false) => {
       stacktrace: error.stack || error.stacktrace,
       source: error.fileName || error.source,
     },
-    disableStacktrace: !!(error.stack || error.stacktrace), // Dont generate a second stacktrace for errors since they already have it
+    disableStacktrace: !!(error.stack || error.stacktrace), // Don't generate a second stacktrace for errors since they already have it
   });
 };
 
