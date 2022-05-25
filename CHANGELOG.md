@@ -1,5 +1,17 @@
 ## Changelog
 
+## [2.0.9](https://github.com/logdna/logdna-browser/compare/v2.0.8...v2.0.9) (2022-05-25)
+
+
+### Bug Fixes
+
+* **doc**: Updated comment [988b705](https://github.com/logdna/logdna-browser/commit/988b705fa2246e8e27ea7e1d99245309f8108336) - Terry Moore
+
+
+### Miscellaneous
+
+* fix (error): Unhandled promise rejection handler [3166872](https://github.com/logdna/logdna-browser/commit/316687232bd27c220e93b4c09125da6c842b93e1) - Terry Moore
+
 ## [2.0.8](https://github.com/logdna/logdna-browser/compare/v2.0.7...v2.0.8) (2022-05-02)
 
 
