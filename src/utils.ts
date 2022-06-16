@@ -93,8 +93,24 @@ const isBrowserStorageAvailable = (storage: 'localStorage' | 'sessionStorage') =
 
 const isFunction = (fn?: Function) => typeof fn === 'function';
 
-const { log, debug, error, warn, info } = window.console;
-const originalConsole: any = { log, debug, error, warn, info };
+const consoleMethods = ['log', 'error', 'debug', 'warn', 'info'];
+let cachedConsole: any = consoleMethods.reduce((a: any, m: string) => ({ ...a, [m]: () => {} }), {});
+const originalConsole: any = consoleMethods.reduce(
+  (a: any, m: string) => ({
+    ...a,
+    [m]: (...args: any) => {
+      cachedConsole[m](...args);
+    },
+  }),
+  {},
+);
+
+// This will delay the caching of the original instance of the console
+// until after logdna is enabled and initialized for use with SSR.
+const cacheConsole = () => {
+  const { log, error, debug, warn, info } = window.console;
+  cachedConsole = { log, error, debug, warn, info };
+};
 
 export default {
   validateHostname,
@@ -108,4 +124,5 @@ export default {
   isBrowserStorageAvailable,
   isFunction,
   originalConsole,
+  cacheConsole,
 };
