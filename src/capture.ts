@@ -4,7 +4,7 @@ import { process } from './buffer-manager';
 import utils from './utils';
 import { getStaticContext, getContext, getDynamicContext } from './context-manager';
 import { getSessionId } from './session-manager';
-import { LogMessage, LogDNALogLine } from './logdna';
+import { LogMessage } from './logdna';
 
 const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage) => {
   if (isSendingDisabled()) return;

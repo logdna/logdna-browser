@@ -40,6 +40,7 @@ const init = (ingestionKey: string, opts: LogDNABrowserOptions = DEFAULT_CONFIG)
     return;
   }
 
+  utils.cacheConsole();
   sampleRate = utils.generateSampleRateScore();
   initPlugins(options);
   addFlushEvents();
