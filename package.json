@@ -1,6 +1,6 @@
 {
   "name": "@logdna/browser",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "module": "dist/index.esm.js",
   "main": "dist/index.js",
   "license": "MIT",

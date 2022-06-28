@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.10](https://github.com/logdna/logdna-browser/compare/v2.0.9...v2.0.10) (2022-06-28)
+
+
+### Bug Fixes
+
+* **ssr**: Fix the ability to use the logger with SSR frameworks [48cc673](https://github.com/logdna/logdna-browser/commit/48cc673450c5bb6971b5a499b49cf139f3982ace) - Terry Moore
+
 ## [2.0.9](https://github.com/logdna/logdna-browser/compare/v2.0.8...v2.0.9) (2022-05-25)
 
 
