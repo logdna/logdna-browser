@@ -58,6 +58,7 @@ logdna.addContext({
   // Add any custom meta data such as:
   version: 'v1.0.2',
   sessionReplay: 'http://mySessionReplayTool/',
+  env: 'prod'
   user: {
     email: 'user@email.email',
     userId: '987654321',
@@ -188,7 +189,6 @@ logdna.init(LOGDNA_INGESTION_KEY, {
 | options                                               | default value                               | type               | description                                                                                                                                                             |
 | ----------------------------------------------------- | ------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `app`                                                 | `window.location.hostname`                  | string             | Name of your application                                                                                                                                                |
-| `env`                                                 |                                             | string             | An environment label attached to each message (ex. `production`, `staging`)                                                                                             |
 | `hostname`                                            | logdna-browser-logger                       | string             | A hostname associated with each log line, populates the Source field in the LogDNA UI.                                                                                  |
 | `tags`                                                | 'LogDNA-Browser'                            | string or string[] | Add custom tags used in the LogDNA log line interface. Will always contain `LogDNA-Browser`.                                                                            |
 | `enableStacktrace`                                    | `true`                                      | boolean            | Enable adding stack traces for each log message (does not affect error stack traces)                                                                                    |
