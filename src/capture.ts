@@ -57,7 +57,7 @@ const generateLogLine = ({ level = 'log', message, lineContext = {}, errorContex
   process({
     timestamp: Math.floor(Date.now() / 1000),
     app: opts.app || window.location.host,
-    line: typeof data.message === 'string' ? data.message : utils.stringify(data.message),
+    line: typeof data.message === 'string' ? data.message : utils.stringify(data.message, opts.jsonReplacer),
     level: data.level,
     meta: {
       sessionId: getSessionId(),

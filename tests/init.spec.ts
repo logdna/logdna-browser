@@ -54,6 +54,17 @@ describe('init.ts', () => {
       expect(addDefaultPlugins).toHaveBeenCalled();
       expect(addPluginMethods).toHaveBeenCalled();
     });
+
+    it('should add the JSON replacer', () => {
+      let jsonReplacer = (key: string, value: any) => {
+        if (key === 'password') {
+          return '[redacted]';
+        }
+        return value;
+      };
+      config(INGESTION_KEY, { jsonReplacer });
+      expect(getOptions().jsonReplacer).toEqual(jsonReplacer);
+    });
   });
 
   describe('init', () => {

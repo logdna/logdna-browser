@@ -1,5 +1,6 @@
 import safeStringify from 'fast-safe-stringify';
 import { HOSTNAME_CHECK, DEFAULT_TAG, SESSION_SCORE_KEY } from './constants';
+import { getOptions } from './init';
 
 import { Tags } from './logdna';
 
@@ -17,7 +18,7 @@ const parseTags = (tags: Tags = []) => {
   return [DEFAULT_TAG, ...tags].filter(tag => tag !== '').join(',');
 };
 
-const stringify = (obj: unknown) => safeStringify(obj);
+const stringify = (obj: unknown, replacer?: ((key: string, value: any) => any) | undefined) => safeStringify(obj, replacer);
 
 const getStackTrace = () => {
   const stack = new Error().stack || '';
@@ -48,7 +49,7 @@ const _randomBetween = (min: number, max: number) => {
 const backOffWithJitter = (base: number, cap: number, lastSleep: number) => Math.min(cap, _randomBetween(base, lastSleep * 3));
 
 const jsonByteSize = (obj: unknown) => {
-  const stringified = stringify(obj);
+  const stringified = stringify(obj, getOptions().jsonReplacer);
   if (window.TextEncoder) {
     return new TextEncoder().encode(stringified).length;
   }

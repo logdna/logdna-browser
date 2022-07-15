@@ -31,6 +31,19 @@ describe('Utils', () => {
       };
       expect(utils.stringify(encode)).toEqual('{"data":{"obj":{"obj":"[Circular]"}}}');
     });
+    it('should properly use the JSON replacer function', () => {
+      let obj: any = {
+        email: 'test@example.com',
+        password: 'SuperSecretPassword',
+      };
+      let jsonReplacer = (key: string, value: any) => {
+        if (key === 'password') {
+          return '[redacted]';
+        }
+        return value;
+      };
+      expect(utils.stringify(obj, jsonReplacer)).toEqual('{"email":"test@example.com","password":"[redacted]"}');
+    });
   });
 
   describe('jsonByteSize', () => {
