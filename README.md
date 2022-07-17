@@ -58,7 +58,7 @@ logdna.addContext({
   // Add any custom meta data such as:
   version: 'v1.0.2',
   sessionReplay: 'http://mySessionReplayTool/',
-  env: 'prod'
+  env: 'prod',
   user: {
     email: 'user@email.email',
     userId: '987654321',
