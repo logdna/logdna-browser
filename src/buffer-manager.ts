@@ -94,7 +94,7 @@ const send = async (lines: LogDNALogLine[]) => {
         Authorization: `Basic ${btoa(`${opts.ingestionKey}:`)}`,
         'Content-Type': 'application/json',
       },
-      body: utils.stringify({ lines }),
+      body: utils.stringify({ lines }, opts.jsonReplacer),
     });
 
     if (response.ok) {
