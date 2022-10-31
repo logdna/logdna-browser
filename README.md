@@ -52,7 +52,10 @@ import logdna from '@logdna/browser';
 // Found in Settings > Organization > API Keys
 const LOGDNA_INGESTION_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
-logdna.init(LOGDNA_INGESTION_KEY);
+logdna.init(LOGDNA_INGESTION_KEY, {
+    url:"https://logs.mezmo.com/logs/ingest",
+});
+
 logdna.addContext({
   // Context is appended to the metadata of each message sent to LogDNA
   // Add any custom meta data such as:
