@@ -1,6 +1,6 @@
 import { LogDNABrowserOptions } from './logdna';
 
-const DEFAULT_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
+const DEFAULT_INGESTION_URL = 'https://logs.mezmo.com/logs/ingest';
 const LOG_LINE_FLUSH_TIMEOUT = 250; // ms
 const FLUSH_BYTE_LIMIT = 60 * 1024; // Max chrome allows with fetch and keep alive is 64kb, we are making it smaller to account for headers and unknowns
 const SAMPLE_RATE = 100;

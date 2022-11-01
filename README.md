@@ -6,7 +6,7 @@
 ![GitHub issues](https://img.shields.io/github/issues-raw/logdna/logdna-browser)
 ![npm](https://img.shields.io/npm/dm/@logdna/browser)
 
-A code library for implementing frontend browser logging and exception capturing in LogDNA. Capture browser errors and log messages from your console and centralize them to your LogDNA instance. Optionally, use the [LogDNA Browser Logger Template](https://docs.logdna.com/page/logdna-browser-logger-template) to get out-of-the-box Views, Boards, and Screens to analyze your browser logs.
+A code library for implementing frontend browser logging and exception capturing in LogDNA. Capture browser errors and log messages from your console and centralize them to your LogDNA instance. Optionally, use the [LogDNA Browser Logger Template](https://docs.mezmo.com/page/logdna-browser-logger-template) to get out-of-the-box Views, Boards, and Screens to analyze your browser logs.
 
 - [Module Installation](#module-installation)
 - [Example Usage](#example-usage)
@@ -78,7 +78,7 @@ console.log('Hello world!');
 - Login to LogDNA
 - Go to Settings
 - Click on Organizations
-- Click on [Whitelist Domains](https://app.logdna.com/manage/whitelist-domains)
+- Click on [Whitelist Domains](https://app.mezmo.com/manage/whitelist-domains)
   - Add your web application's full URL, including the https and any port information
   - _Note: This may take around 15 minutes before the domain is properly whitelisted._
   - ex: `https://www.YourAppAddressHere.com`
@@ -86,7 +86,7 @@ console.log('Hello world!');
 
 ## Browser Logger Template
 
-Use the [LogDNA Browser Logger Template](https://docs.logdna.com/page/logdna-browser-logger-template) to get out-of-the-box Views, Boards, and Screens to analyze your errors and log messages from Browser Logger.
+Use the [LogDNA Browser Logger Template](https://docs.mezmo.com/page/logdna-browser-logger-template) to get out-of-the-box Views, Boards, and Screens to analyze your errors and log messages from Browser Logger.
 
 **Example Board included in the Template:**
 
@@ -199,7 +199,7 @@ logdna.init(LOGDNA_INGESTION_KEY, {
 | `globalErrorHandlers.enableErrorHandler`              | `false`                                     | boolean            | Enable automatic capturing and logging of unhandled errors.                                                                                                             |
 | `globalErrorHandlers.enableUnhandledPromiseRejection` | `false`                                     | boolean            | Enable automatic capturing and logging of unhandled promised rejections.                                                                                                |
 | `sampleRate`                                          | 100                                         | number             | Percentage of sessions to track from 0 to 100. `0` for none `100` for all                                                                                               |
-| `url`                                                 | https://logs.logdna.com/logs/ingest         | string             | LogDNA ingestion URL                                                                                                                                                    |
+| `url`                                                 | https://logs.mezmo.com/logs/ingest          | string             | Mezmo ingestion URL                                                                                                                                                     |
 | `flushInterval`                                       | 250                                         | number             | Number of milliseconds to buffer log lines before sending to LogDNA                                                                                                     |
 | `disabled`                                            | `false`                                     | boolean            | Disable the logger from sending logs                                                                                                                                    |
 | `debug`                                               | `false`                                     | boolean            | When debug is `true`, `logdna.<log, error, warn, info, debug>` methods will log to both LogDNA and to the console. When `false` these methods will only send to LogDNA. |
