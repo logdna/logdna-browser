@@ -124,7 +124,7 @@ const send = async (lines: LogDNALogLine[]) => {
        - Your web apps url (${window.location.origin}) is not listed in your LogDNA account's CORS whitelist domains
        - Ingestion key is incorrect
        - The configured LogDNA ingestion url is incorrect
-       - LogDNA ingestion endpoint is down. https://status.logdna.com/
+       - LogDNA ingestion endpoint is down. https://status.mezmo.com/
 
        Error: ${(error as Error).message}
       `,
