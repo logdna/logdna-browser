@@ -74,8 +74,7 @@
     "fast-safe-stringify": "^2.0.7"
   },
   "publishConfig": {
-    "access": "public",
-    "tag": "beta"
+    "access": "public"
   },
   "husky": {
     "hooks": {
