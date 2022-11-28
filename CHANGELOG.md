@@ -1,5 +1,12 @@
 ## Changelog
 
+# [2.1.0](https://github.com/logdna/logdna-browser/compare/v2.0.11...v2.1.0) (2022-11-28)
+
+
+### Features
+
+* **release**: Release latest [f3e90a4](https://github.com/logdna/logdna-browser/commit/f3e90a4f2c61911b7f519dfd91fa34a7e81a3395) - Terry Moore
+
 ## [2.0.11](https://github.com/logdna/logdna-browser/compare/v2.0.10...v2.0.11) (2022-11-28)
 
 
