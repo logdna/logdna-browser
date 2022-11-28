@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Test App</title>
+    <script src="http://localhost:5000/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vue Test App</title>
-  <script src="http://localhost:5000/index.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
-</head>
+  <body>
+    <div id="app">You must add your api key</div>
 
-<body>
-  <div id="app">You must add your api key</div>
+    <script>
+      const apiKey = '';
+      const url = 'https://logs.mezmo.com/logs/ingest';
+      logdna.init(apiKey, {
+        url,
+      });
 
-  <script>
-    const apiKey = '';
-    const url = 'https://logs.logdna.com/logs/ingest';
-    logdna.init(apiKey, {
-      url,
-    });
-
-    new Vue({
-      el: '#app',
-      data() {
-        return {
-          message: 'Very crude vue test app',
-        };
-      },
-      render(h) {
-        return h('div', this.message);
-      },
-      mounted() {
-        throw new Error('Testing.');
-      },
-    });
-  </script>
-</body>
-
+      new Vue({
+        el: '#app',
+        data() {
+          return {
+            message: 'Very crude vue test app',
+          };
+        },
+        render(h) {
+          return h('div', this.message);
+        },
+        mounted() {
+          throw new Error('Testing.');
+        },
+      });
+    </script>
+  </body>
 </html>

@@ -1,5 +1,18 @@
 ## Changelog
 
+## [2.0.11](https://github.com/logdna/logdna-browser/compare/v2.0.10...v2.0.11) (2022-11-28)
+
+
+### Bug Fixes
+
+* **url**: Update to use mezmo ingestion urls [967b8dc](https://github.com/logdna/logdna-browser/commit/967b8dc36cd786567abf29d6710e40a35164127f) - Terry Moore
+
+
+### Miscellaneous
+
+* Update README.md [f3ba0c6](https://github.com/logdna/logdna-browser/commit/f3ba0c62afe2ddc2e40878ab29be43b2b528637c) - Darin Spivey
+* chore (docs): Update Readme [6c248bb](https://github.com/logdna/logdna-browser/commit/6c248bbf1cb4e9d46175393b4e07e4cff37cb35d) - Terry Moore, closes: [#43](https://github.com/logdna/logdna-browser/issues/43)
+
 ## [2.0.10](https://github.com/logdna/logdna-browser/compare/v2.0.9...v2.0.10) (2022-06-28)
 
 
