@@ -1,7 +1,7 @@
 import { GlobalErrorHandlerPlugin } from './plugins/global-handler';
-declare module 'logdna-browser-2' { }
+declare module 'logdna-browser-2' {}
 
-interface LogDNAMethods { }
+interface LogDNAMethods {}
 
 // This is fallback to 3rd party plugin methods
 // Until TS has better Module Augmentation without
@@ -54,6 +54,8 @@ export type LogDNABrowserOptions = {
   ingestionKey?: string;
   hooks?: HooksOption;
   internalErrorLogger?: Function;
+  disableInternalErrorLogger?: Boolean;
+  internalErrorLoggerLevel?: LogLevel;
 };
 
 export type LineContext = object;
