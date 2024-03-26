@@ -64,7 +64,7 @@ describe('capture.ts', () => {
     });
 
     it('should call any beforeSend hooks when defined', () => {
-      const hook = jest.fn(data => data);
+      const hook = jest.fn((data) => data);
       DEFAULT_CONFIG.hooks = {
         beforeSend: [hook],
       };
@@ -127,7 +127,9 @@ describe('capture.ts', () => {
 
   describe('internalErrorLogger', () => {
     console.error = jest.fn();
+    console.info = jest.fn();
     utils.originalConsole.error = jest.fn();
+    utils.originalConsole.info = jest.fn();
 
     it('should log out to console error when default logger', () => {
       internalErrorLogger('My Internal Message');
@@ -143,12 +145,31 @@ describe('capture.ts', () => {
       expect(process).toHaveBeenCalledTimes(0);
     });
 
+    it('should log out to console info when the internalErrorLoggerLevel is defined ', () => {
+      DEFAULT_CONFIG.internalErrorLoggerLevel = 'info';
+      internalErrorLogger('My Internal Message');
+      expect(utils.originalConsole.info).toHaveBeenCalledWith('My Internal Message');
+      expect(console.info).toHaveBeenCalledTimes(0);
+      expect(process).toHaveBeenCalledTimes(0);
+      delete DEFAULT_CONFIG.internalErrorLoggerLevel;
+    });
+
     it('should call custom logger when defined', () => {
       DEFAULT_CONFIG.internalErrorLogger = jest.fn();
 
       internalErrorLogger('My Internal Message');
       expect(DEFAULT_CONFIG.internalErrorLogger).toHaveBeenCalledWith('My Internal Message');
       expect(console.error).toHaveBeenCalledTimes(0);
+      delete DEFAULT_CONFIG.internalErrorLogger;
+    });
+
+    it('should not log out to console when internal logger is disabled ', () => {
+      DEFAULT_CONFIG.disableInternalErrorLogger = true;
+      internalErrorLogger('My Internal Message');
+      expect(utils.originalConsole.error).toHaveBeenCalledTimes(0);
+      expect(console.info).toHaveBeenCalledTimes(0);
+      expect(process).toHaveBeenCalledTimes(0);
+      DEFAULT_CONFIG.disableInternalErrorLogger = false;
     });
   });
 });

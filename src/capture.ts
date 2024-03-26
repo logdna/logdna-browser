@@ -72,12 +72,15 @@ const generateLogLine = ({ level = 'log', message, lineContext = {}, errorContex
 };
 
 const internalErrorLogger = (...args: any[]) => {
+  if (getOptions().disableInternalErrorLogger) return;
+
   if (utils.isFunction(getOptions().internalErrorLogger)) {
     // @ts-ignore
     getOptions().internalErrorLogger(...args);
     return;
   }
-  return utils.originalConsole.error(...args);
+  const logLevel = getOptions().internalErrorLoggerLevel ?? 'error';
+  return utils.originalConsole[logLevel](...args);
 };
 
 export { captureError, captureMessage, internalErrorLogger };
