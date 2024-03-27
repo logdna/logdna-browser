@@ -1,5 +1,12 @@
 ## Changelog
 
+# [2.2.0](https://github.com/logdna/logdna-browser/compare/v2.1.0...v2.2.0) (2024-03-27)
+
+
+### Features
+
+* **logger**: Additional internal logger options [f79fd80](https://github.com/logdna/logdna-browser/commit/f79fd804f8a2b32a5e85252e62af9da5050aa6da) - Terry Moore
+
 # [2.1.0](https://github.com/logdna/logdna-browser/compare/v2.0.11...v2.1.0) (2022-11-28)
 
 
