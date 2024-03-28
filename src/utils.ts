@@ -108,8 +108,10 @@ const originalConsole: any = consoleMethods.reduce(
 // This will delay the caching of the original instance of the console
 // until after logdna is enabled and initialized for use with SSR.
 const cacheConsole = () => {
-  const { log, error, debug, warn, info } = window.console;
-  cachedConsole = { log, error, debug, warn, info };
+  if (window) {
+    const { log, error, debug, warn, info } = window.console;
+    cachedConsole = { log, error, debug, warn, info };
+  }
 };
 
 export default {
