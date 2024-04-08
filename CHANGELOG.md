@@ -1,5 +1,12 @@
 ## Changelog
 
+# [2.3.0](https://github.com/logdna/logdna-browser/compare/v2.2.0...v2.3.0) (2024-04-08)
+
+
+### Features
+
+* **logger**: Updates for better stacktrace handling [d7ba2b7](https://github.com/logdna/logdna-browser/commit/d7ba2b75cc522efe829f96c1fcc5d7ae0e476447) - Terry Moore
+
 # [2.2.0](https://github.com/logdna/logdna-browser/compare/v2.1.0...v2.2.0) (2024-03-27)
 
 
