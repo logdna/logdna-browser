@@ -6,7 +6,7 @@ import { getStaticContext, getContext, getDynamicContext } from './context-manag
 import { getSessionId } from './session-manager';
 import { LogMessage } from './logdna';
 
-const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage) => {
+const captureMessage = async ({ level = 'log', message, lineContext = {} }: LogMessage) => {
   if (isSendingDisabled()) return;
 
   if (message instanceof Error) {
@@ -14,10 +14,10 @@ const captureMessage = ({ level = 'log', message, lineContext = {} }: LogMessage
     return;
   }
 
-  generateLogLine({ level, message, lineContext });
+  await generateLogLine({ level, message, lineContext });
 };
 
-const captureError = (error: any, isUnhandledRejection = false) => {
+const captureError = async (error: any, isUnhandledRejection = false) => {
   if (isSendingDisabled()) return;
 
   let message = error.name ? `${error.name}: ${error.message}` : error.message;
@@ -26,20 +26,20 @@ const captureError = (error: any, isUnhandledRejection = false) => {
     message = `Uncaught (in promise) ${message}`;
   }
 
-  generateLogLine({
+  await generateLogLine({
     level: 'error',
     message,
     errorContext: {
       colno: error.columnNumber || error.colno || error.colNo,
       lineno: error.lineNumber || error.lineno || error.lineNo,
-      stacktrace: error.stack || error.stacktrace,
+      stacktrace: await utils.getStackTraceFromError(error),
       source: error.fileName || error.source,
     },
     disableStacktrace: !!(error.stack || error.stacktrace), // Don't generate a second stacktrace for errors since they already have it
   });
 };
 
-const generateLogLine = ({ level = 'log', message, lineContext = {}, errorContext = null, disableStacktrace = false }: LogMessage) => {
+const generateLogLine = async ({ level = 'log', message, lineContext = {}, errorContext = null, disableStacktrace = false }: LogMessage) => {
   const opts = getOptions();
 
   // run the beforeSend hooks
@@ -63,7 +63,7 @@ const generateLogLine = ({ level = 'log', message, lineContext = {}, errorContex
       sessionId: getSessionId(),
       ...getStaticContext(),
       ...getDynamicContext(),
-      stacktrace: disableStacktrace || !opts.enableStacktrace ? undefined : utils.getStackTrace(),
+      stacktrace: disableStacktrace || !opts.enableStacktrace ? undefined : await utils.getStackTrace(),
       context: { ...getContext() },
       lineContext: data.lineContext,
       errorContext,

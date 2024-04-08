@@ -19,19 +19,19 @@ describe('capture.ts', () => {
       expect(process).toHaveBeenCalledTimes(0);
     });
 
-    it('should call process when sending is enabled', () => {
+    it('should call process when sending is enabled', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
-      captureMessage({
+      await captureMessage({
         message: 'Testing',
         level: 'log',
       });
       expect(process).toHaveBeenCalledTimes(1);
     });
 
-    it('should generate a logdna logline', () => {
+    it('should generate a logdna logline', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
 
-      captureMessage({
+      await captureMessage({
         message: 'Testing',
         level: 'log',
       });
@@ -45,11 +45,11 @@ describe('capture.ts', () => {
       });
     });
 
-    it('should generate an error context when message is an error', () => {
+    it('should generate an error context when message is an error', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementation(() => false);
 
       const error = new Error('Error Message');
-      captureMessage({
+      await captureMessage({
         message: error,
         level: 'log',
       });
@@ -63,12 +63,12 @@ describe('capture.ts', () => {
       });
     });
 
-    it('should call any beforeSend hooks when defined', () => {
+    it('should call any beforeSend hooks when defined', async () => {
       const hook = jest.fn((data) => data);
       DEFAULT_CONFIG.hooks = {
         beforeSend: [hook],
       };
-      captureMessage({
+      await captureMessage({
         message: 'Testing',
         level: 'log',
       });
@@ -78,25 +78,25 @@ describe('capture.ts', () => {
   });
 
   describe('captureError', () => {
-    it('should return without calling process is sending is disabled', () => {
+    it('should return without calling process is sending is disabled', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => true);
       const error = new Error('Error Message');
-      captureError(error);
+      await captureError(error);
       expect(process).toHaveBeenCalledTimes(0);
     });
 
-    it('should call process when sending is enabled', () => {
+    it('should call process when sending is enabled', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
       const error = new Error('Error Message');
-      captureError(error);
+      await captureError(error);
       expect(process).toHaveBeenCalledTimes(1);
     });
 
-    it('should generate an error context when message is an error', () => {
+    it('should generate an error context when message is an error', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
 
       const error = new TypeError('Error Message');
-      captureError(error);
+      await captureError(error);
 
       expect(process).toHaveBeenCalledTimes(1);
       expect(process).toHaveBeenCalledWith({
@@ -108,11 +108,11 @@ describe('capture.ts', () => {
       });
     });
 
-    it('should generate an error context and not add the type when it not provided', () => {
+    it('should generate an error context and not add the type when it not provided', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
 
       const error = { message: 'Error Message' };
-      captureError(error);
+      await captureError(error);
 
       expect(process).toHaveBeenCalledTimes(1);
       expect(process).toHaveBeenCalledWith({
