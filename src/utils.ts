@@ -1,12 +1,14 @@
 import safeStringify from 'fast-safe-stringify';
+import StackTrace from 'stacktrace-js';
 import { HOSTNAME_CHECK, DEFAULT_TAG, SESSION_SCORE_KEY } from './constants';
+import { internalErrorLogger } from './capture';
 
 import { Tags } from './logdna';
 
 const validateHostname = (hostname: string) => HOSTNAME_CHECK.test(hostname);
 
 const parseTags = (tags: Tags = []) => {
-  if ((typeof tags !== 'string' && !Array.isArray(tags)) || (Array.isArray(tags) && tags.some(tag => typeof tag !== 'string'))) {
+  if ((typeof tags !== 'string' && !Array.isArray(tags)) || (Array.isArray(tags) && tags.some((tag) => typeof tag !== 'string'))) {
     throw new Error(`LogDNA Browser Logger \`tags\` must be a string or an array of strings`);
   }
 
@@ -14,18 +16,38 @@ const parseTags = (tags: Tags = []) => {
     tags = [tags];
   }
 
-  return [DEFAULT_TAG, ...tags].filter(tag => tag !== '').join(',');
+  return [DEFAULT_TAG, ...tags].filter((tag) => tag !== '').join(',');
 };
 
 const stringify = (obj: unknown) => safeStringify(obj);
 
-const getStackTrace = () => {
-  const stack = new Error().stack || '';
-  const array = stack
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => !line.includes('@logdna/browser'));
-  return array.join('\n');
+const processStackFrames = (stackframes: any) => {
+  return stackframes
+    .map(function (sf: any) {
+      const sfString = sf.toString();
+      if (sfString.includes('logdnasrc') || sfString.includes('@logdna/browser') || sfString.includes('stacktrace-js')) return null;
+      return sfString;
+    })
+    .filter((l: string) => l !== null)
+    .join('\n');
+};
+
+const getStackTraceFromError = async (error: Error) => {
+  try {
+    const stackframes = await StackTrace.fromError(error);
+    return processStackFrames(stackframes);
+  } catch (error) {
+    return 'Error getting trace';
+  }
+};
+
+const getStackTrace = async () => {
+  try {
+    const stackframes = await StackTrace.get();
+    return processStackFrames(stackframes);
+  } catch (error: any) {
+    return 'Error getting trace';
+  }
 };
 
 const _randomBetween = (min: number, max: number) => {
@@ -117,6 +139,7 @@ export default {
   parseTags,
   stringify,
   getStackTrace,
+  getStackTraceFromError,
   backOffWithJitter,
   jsonByteSize,
   includeInSampleRate,
