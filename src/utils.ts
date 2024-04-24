@@ -33,21 +33,19 @@ const processStackFrames = (stackframes: any) => {
 };
 
 const getStackTraceFromError = async (error: Error) => {
+  // This converts something like `throw 'some string'` into a real error
+  if (typeof error === 'string') error = new Error(error);
   try {
     const stackframes = await StackTrace.fromError(error);
     return processStackFrames(stackframes);
-  } catch (error) {
-    return 'Error getting trace';
-  }
+  } catch (error) {}
 };
 
 const getStackTrace = async () => {
   try {
     const stackframes = await StackTrace.get();
     return processStackFrames(stackframes);
-  } catch (error: any) {
-    return 'Error getting trace';
-  }
+  } catch (error: any) {}
 };
 
 const _randomBetween = (min: number, max: number) => {
