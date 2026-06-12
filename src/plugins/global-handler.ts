@@ -24,15 +24,21 @@ const addUnhandledrejection = () => {
 };
 
 /*  istanbul ignore next */
-const onUnhandledRejection = (e: any) => {
-  let error: any = e.reason;
-  captureError(error, true);
+const onUnhandledRejection = (event: PromiseRejectionEvent) => {
+  captureError(event?.reason, true);
 };
 
 /*  istanbul ignore next */
-const onError = (error: ErrorEvent) => {
-  const e = error?.error ?? error ?? {};
-  captureError(e);
+const onError = (event: ErrorEvent) => {
+  // Prefer the underlying Error (carries name/message/stack), but keep the event's
+  // own position fields — Chromium Errors don't expose filename/lineno/colno.
+  const error = event?.error ?? event ?? {};
+  captureError(error, false, {
+    message: event?.message,
+    filename: event?.filename,
+    lineno: event?.lineno,
+    colno: event?.colno,
+  });
 };
 
 const GlobalErrorHandler = (opts: GlobalErrorHandlerPlugin = DEFAULT_OPTIONS): Plugin => ({

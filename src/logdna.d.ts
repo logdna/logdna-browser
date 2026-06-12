@@ -65,6 +65,18 @@ export type ErrorContext = {
   lineno?: number;
   stacktrace?: string;
   source?: string;
+  type?: string;
+  rawStack?: string;
+  cause?: any;
+  reason?: any;
+  isUnhandledRejection?: boolean;
+};
+
+export type ErrorEventContext = {
+  message?: string;
+  filename?: string;
+  lineno?: number;
+  colno?: number;
 };
 
 export type LogMessage = {
