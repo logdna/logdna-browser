@@ -19,19 +19,19 @@ describe('capture.ts', () => {
       expect(process).toHaveBeenCalledTimes(0);
     });
 
-    it('should call process when sending is enabled', () => {
+    it('should call process when sending is enabled', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
-      captureMessage({
+      await captureMessage({
         message: 'Testing',
         level: 'log',
       });
       expect(process).toHaveBeenCalledTimes(1);
     });
 
-    it('should generate a logdna logline', () => {
+    it('should generate a logdna logline', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
 
-      captureMessage({
+      await captureMessage({
         message: 'Testing',
         level: 'log',
       });
@@ -45,11 +45,11 @@ describe('capture.ts', () => {
       });
     });
 
-    it('should generate an error context when message is an error', () => {
+    it('should generate an error context when message is an error', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementation(() => false);
 
       const error = new Error('Error Message');
-      captureMessage({
+      await captureMessage({
         message: error,
         level: 'log',
       });
@@ -63,12 +63,12 @@ describe('capture.ts', () => {
       });
     });
 
-    it('should call any beforeSend hooks when defined', () => {
-      const hook = jest.fn(data => data);
+    it('should call any beforeSend hooks when defined', async () => {
+      const hook = jest.fn((data) => data);
       DEFAULT_CONFIG.hooks = {
         beforeSend: [hook],
       };
-      captureMessage({
+      await captureMessage({
         message: 'Testing',
         level: 'log',
       });
@@ -78,25 +78,25 @@ describe('capture.ts', () => {
   });
 
   describe('captureError', () => {
-    it('should return without calling process is sending is disabled', () => {
+    it('should return without calling process is sending is disabled', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => true);
       const error = new Error('Error Message');
-      captureError(error);
+      await captureError(error);
       expect(process).toHaveBeenCalledTimes(0);
     });
 
-    it('should call process when sending is enabled', () => {
+    it('should call process when sending is enabled', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
       const error = new Error('Error Message');
-      captureError(error);
+      await captureError(error);
       expect(process).toHaveBeenCalledTimes(1);
     });
 
-    it('should generate an error context when message is an error', () => {
+    it('should generate an error context when message is an error', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
 
       const error = new TypeError('Error Message');
-      captureError(error);
+      await captureError(error);
 
       expect(process).toHaveBeenCalledTimes(1);
       expect(process).toHaveBeenCalledWith({
@@ -108,11 +108,11 @@ describe('capture.ts', () => {
       });
     });
 
-    it('should generate an error context and not add the type when it not provided', () => {
+    it('should generate an error context and not add the type when it not provided', async () => {
       jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
 
       const error = { message: 'Error Message' };
-      captureError(error);
+      await captureError(error);
 
       expect(process).toHaveBeenCalledTimes(1);
       expect(process).toHaveBeenCalledWith({
@@ -127,7 +127,9 @@ describe('capture.ts', () => {
 
   describe('internalErrorLogger', () => {
     console.error = jest.fn();
+    console.info = jest.fn();
     utils.originalConsole.error = jest.fn();
+    utils.originalConsole.info = jest.fn();
 
     it('should log out to console error when default logger', () => {
       internalErrorLogger('My Internal Message');
@@ -143,12 +145,31 @@ describe('capture.ts', () => {
       expect(process).toHaveBeenCalledTimes(0);
     });
 
+    it('should log out to console info when the internalErrorLoggerLevel is defined ', () => {
+      DEFAULT_CONFIG.internalErrorLoggerLevel = 'info';
+      internalErrorLogger('My Internal Message');
+      expect(utils.originalConsole.info).toHaveBeenCalledWith('My Internal Message');
+      expect(console.info).toHaveBeenCalledTimes(0);
+      expect(process).toHaveBeenCalledTimes(0);
+      delete DEFAULT_CONFIG.internalErrorLoggerLevel;
+    });
+
     it('should call custom logger when defined', () => {
       DEFAULT_CONFIG.internalErrorLogger = jest.fn();
 
       internalErrorLogger('My Internal Message');
       expect(DEFAULT_CONFIG.internalErrorLogger).toHaveBeenCalledWith('My Internal Message');
       expect(console.error).toHaveBeenCalledTimes(0);
+      delete DEFAULT_CONFIG.internalErrorLogger;
+    });
+
+    it('should not log out to console when internal logger is disabled ', () => {
+      DEFAULT_CONFIG.disableInternalErrorLogger = true;
+      internalErrorLogger('My Internal Message');
+      expect(utils.originalConsole.error).toHaveBeenCalledTimes(0);
+      expect(console.info).toHaveBeenCalledTimes(0);
+      expect(process).toHaveBeenCalledTimes(0);
+      DEFAULT_CONFIG.disableInternalErrorLogger = false;
     });
   });
 });

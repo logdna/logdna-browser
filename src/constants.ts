@@ -33,6 +33,8 @@ const DEFAULT_CONFIG: LogDNABrowserOptions = {
   hooks: {
     beforeSend: [],
   },
+  disableInternalErrorLogger: false,
+  internalErrorLoggerLevel: 'error',
 };
 
 export {

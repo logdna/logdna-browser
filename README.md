@@ -204,6 +204,8 @@ logdna.init(LOGDNA_INGESTION_KEY, {
 | `disabled`                                            | `false`                                     | boolean            | Disable the logger from sending logs                                                                                                                                    |
 | `debug`                                               | `false`                                     | boolean            | When debug is `true`, `logdna.<log, error, warn, info, debug>` methods will log to both LogDNA and to the console. When `false` these methods will only send to LogDNA. |
 | `hooks`                                               | `{ }`                                       | object             | Add function to manipulate log message. [See hooks.](#hooks-option)                                                                                                     |
+| `disableInternalErrorLogger`                          | `false`                                     | boolean            | Disable internal errors from being shown in the console                                                                                                                 |
+| `internalErrorLoggerLevel`                            | `'log', 'info', 'debug', 'warn', 'error'`   | string             | By default internal errors are shown as `console.error`, use this option to change to a different console level                                                         |
 
 ## `sampleRate` option
 
