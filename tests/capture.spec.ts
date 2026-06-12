@@ -123,6 +123,72 @@ describe('capture.ts', () => {
         meta: expect.any(Object),
       });
     });
+
+    it('should keep filename/lineno/colno from the error event when the Error lacks them (Chromium)', async () => {
+      jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
+
+      // Chromium Errors do not carry fileName/lineNumber/columnNumber.
+      const error = new Error('Boom');
+      await captureError(error, false, {
+        message: 'Boom',
+        filename: 'https://app.example.com/main.js',
+        lineno: 42,
+        colno: 13,
+      });
+
+      const { meta } = process.mock.calls[0][0] as any;
+      expect(meta.errorContext.source).toEqual('https://app.example.com/main.js');
+      expect(meta.errorContext.lineno).toEqual(42);
+      expect(meta.errorContext.colno).toEqual(13);
+      expect(meta.errorContext.type).toEqual('Error');
+    });
+
+    it('should capture a string promise rejection reason instead of undefined', async () => {
+      jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
+
+      await captureError('Something failed', true);
+
+      const { line, meta } = process.mock.calls[0][0] as any;
+      expect(line).toEqual('Uncaught (in promise) Something failed');
+      expect(meta.errorContext.reason).toEqual('Something failed');
+      expect(meta.errorContext.type).toEqual('string');
+      expect(meta.errorContext.isUnhandledRejection).toEqual(true);
+    });
+
+    it('should capture a non-Error object promise rejection reason', async () => {
+      jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
+
+      await captureError({ code: 500, detail: 'Internal' }, true);
+
+      const { line, meta } = process.mock.calls[0][0] as any;
+      expect(line).toContain('Uncaught (in promise)');
+      expect(line).toContain('500');
+      expect(meta.errorContext.reason).toEqual(JSON.stringify({ code: 500, detail: 'Internal' }));
+    });
+
+    it('should capture error.cause when present', async () => {
+      jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
+
+      const cause = new TypeError('Root cause');
+      const error = new Error('Wrapper');
+      // @ts-ignore - cause may not be in lib target
+      error.cause = cause;
+      await captureError(error);
+
+      const { meta } = process.mock.calls[0][0] as any;
+      expect(meta.errorContext.cause).toEqual(expect.objectContaining({ type: 'TypeError', message: 'Root cause' }));
+    });
+
+    it('should include the raw stack as a fallback', async () => {
+      jest.spyOn(init, 'isSendingDisabled').mockImplementationOnce(() => false);
+
+      const error = new Error('With stack');
+      await captureError(error);
+
+      const { meta } = process.mock.calls[0][0] as any;
+      expect(typeof meta.errorContext.rawStack).toEqual('string');
+      expect(meta.errorContext.rawStack).toContain('With stack');
+    });
   });
 
   describe('internalErrorLogger', () => {
