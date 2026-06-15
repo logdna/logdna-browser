@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.3.2](https://github.com/logdna/logdna-browser/compare/v2.3.1...v2.3.2) (2026-06-15)
+
+
+### Bug Fixes
+
+* **logger**: Updates to uncaught error handlers [70480ac](https://github.com/logdna/logdna-browser/commit/70480ac7821a3f2e851f2b65f8fa606580b6ccaa) - Terry Moore
+
 ## [2.3.1](https://github.com/logdna/logdna-browser/compare/v2.3.0...v2.3.1) (2024-04-24)
 
 
