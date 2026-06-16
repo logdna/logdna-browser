@@ -18,7 +18,7 @@ const captureMessage = async ({ level = 'log', message, lineContext = {} }: LogM
 };
 
 // Classify whatever was thrown/rejected (could be an Error, string, number,
-// plain object, null, etc.) into a consistent shape so we never drop the value.
+// plain object, null, etc.) into a consistent shape so we never drop the value
 const normalizeReason = (value: any) => {
   if (value instanceof Error) {
     return {
