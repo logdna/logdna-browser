@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.3.3](https://github.com/logdna/logdna-browser/compare/v2.3.2...v2.3.3) (2026-06-16)
+
+
+### Bug Fixes
+
+* **logger**: force new build [d60f79c](https://github.com/logdna/logdna-browser/commit/d60f79cbdce0833ac115c46f94681e6bd7153c82) - Terry Moore
+
 ## [2.3.2](https://github.com/logdna/logdna-browser/compare/v2.3.1...v2.3.2) (2026-06-15)
 
 
